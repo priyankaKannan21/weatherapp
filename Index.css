@@ -198,9 +198,6 @@ body{
     border-top-right-radius:25px;
     border-top-left-radius:25px;
     padding: 20px;
-    grid-auto-flow: column;
-    overflow-x: scroll;
-    overflow-y: hidden;
 }
 .container1 .grid_items{
     grid-template-columns: 55% 45%;
@@ -211,7 +208,6 @@ body{
 .grid_items .grid_item1{
     display: flex;
     justify-content: flex-end;
-
 }
 .grid_items .grid_item2{
     display: flex;
@@ -220,7 +216,7 @@ body{
     height: 100%;
     margin-right: 20px;
 }
-.grid_item1 h4{
+.grid_item1 p{
     font-family: Cordia New;
     color: rgb(207, 204, 204);
     font-size: 18px;
@@ -243,8 +239,9 @@ body{
 .grid_items_1{
     grid-template-columns: 18% 18% 18% 18% 18%;
     grid-template-rows: 230px;
-    display: grid;
+    display: flex;
     column-gap:35px;
+    overflow: hidden;
 }
 .grid_items_1 .grid_boxes{
     display: grid;
@@ -285,13 +282,21 @@ body{
     width: 30px;
 }
 
-@media screen and (min-width:600px) and  (max-width:1400px) {
+@media only screen and (min-width:600px) and  (max-width:1500px) {
+
 .grid_items_1{
     grid-auto-flow: column;
     overflow-x: scroll;
     overflow-y: hidden; 
    }
+   
 .grid_boxes{
     width: 250px;
 }
+}
+@media only screen and (min-width:600px) and  (max-width:800px) {
+    .grid_items .grid_item1{
+        display: flex;
+        justify-content: flex-start;
+    }
 }
