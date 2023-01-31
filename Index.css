@@ -169,7 +169,7 @@ body{
     text-align: left;
     font-size: 30px;
 }
-@media screen and (min-width:600px) and  (max-width:1200px) {
+@media screen and (min-width:600px) and  (max-width:1350px) {
     .container{
         grid-template-columns:50% 50%;
         height: 500px;
@@ -181,6 +181,9 @@ body{
     .grid-item_grid-item-1{
       padding: 0px;
       max-width: 300px;
+    }
+    .grid-item_grid-item-1{
+       margin-left: -130px; 
     }
     .grid-item_grid-item-3{
     grid-row: 2 / 3;
