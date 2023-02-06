@@ -7,6 +7,7 @@ fetch('/files/data.json')
     console.log(result);
     weatherdatas();
     weather_icon('Anadyr');
+    time_formart('Anadyr');
 })
 
 //function for display content in drop box
@@ -15,48 +16,61 @@ function weatherdatas(){
     var keys=Object.keys(weatherdata);
     var option=``;
     for(var i=0;i<keys.length;i++){
-        option += `<option>${keys[i]}</option>`;
+        option += `<option value=${keys[i]}></option>`;
     }
     console.log(option);
-    document.querySelector(".city").innerHTML = option;
+    document.querySelector("#city_name").innerHTML = option;
    
 }
+
+setInterval(weather,1000);
 
 //function for display waether content based on city
 
 function weather(){
-    var keys=Object.keys(weatherdata);
-    var city_name = document.querySelector(".city");
-    var selected_city = city_name.options[city_name.selectedIndex].value;
-    for(var i=0;i<keys.length;i++){
-        if(selected_city === keys[i])
-        {
-            var temperature = weatherdata[keys[i]].temperature;
-            var humidity = weatherdata[keys[i]].humidity;
-            var farenheit = Math.round(((parseInt(weatherdata[keys[i]].temperature))*(9/5))+32);
-            var precipitation = weatherdata[keys[i]].precipitation;
-            var date_time = weatherdata[keys[i]].dateAndTime;
-            var date_time_array = date_time.split(", ");
-            var timezone = weatherdata[keys[i]].timezone;
-            var date = date_time_array[0]
-            new_date = date_format(date)
-            break;
-        }
-    }
-    document.querySelector("#temp_c").innerHTML = temperature;
-    document.querySelector("#humidity").innerHTML = humidity;
-    document.querySelector("#faren_f").innerHTML = farenheit;
-    document.querySelector("#preci").innerHTML = precipitation;
-    document.querySelector("#date").innerHTML = new_date;
-    document.querySelector("#city_icon").src = (`/Icons_for_cities/${selected_city}.svg`); 
-    weather_icon(selected_city); 
+    var selected_city = document.getElementById("city").value;
 
-    var dates= new Date().toLocaleString("en-US",{
+    if(!selected_city){
+        document.querySelector("#temp_c").innerHTML = "Nil";
+        document.querySelector("#humidity").innerHTML = "Nil";
+        document.querySelector("#faren_f").innerHTML = "Nil";
+        document.querySelector("#preci").innerHTML = "Nil";
+    
+    }
+    else{
+        var temperature = weatherdata[selected_city].temperature;
+        var humidity = weatherdata[selected_city].humidity;
+        var farenheit = Math.round(((parseInt(weatherdata[selected_city].temperature))*(9/5))+32);
+        var precipitation = weatherdata[selected_city].precipitation;
+        var date_time = weatherdata[selected_city].dateAndTime;
+        var date_time_array = date_time.split(", ");
+        var date = date_time_array[0]
+        new_date = date_format(date)
+
+        document.querySelector("#temp_c").innerHTML = temperature;
+        document.querySelector("#humidity").innerHTML = humidity;
+        document.querySelector("#faren_f").innerHTML = farenheit+" F";
+        document.querySelector("#preci").innerHTML = precipitation;
+        document.querySelector("#date").innerHTML = new_date;
+        document.querySelector("#city_icon").src = (`/Icons_for_cities/${selected_city}.svg`); 
+        weather_icon(selected_city); 
+        time_formart(selected_city);
+        next_five_temperature(selected_city);
+    }
+}
+
+//function to format time
+function time_formart(city){
+    var timezone = weatherdata[city].timeZone;
+    var current_time= new Date().toLocaleString("en-US",{
         timeZone: timezone,
         timeStyle: "medium",
-        hourCycle: "h24",
+        hourCycle: "h12",
     });
-    console.log(dates);
+    var morn_even = (parseInt(current_time.slice(0,2)) >= 12)? "amState" : "amState";
+    document.getElementById("time").innerHTML = current_time.split(' ')[0];
+    document.getElementById("am_pm_state").src=(`/General_Images_&_Icons/${morn_even}.svg`);
+    next_five_hour(current_time);
 }
 
 //function to format date 
@@ -67,12 +81,55 @@ function date_format(date){
     return new_date;
 }
 
+//function to display next five hours temperature
+function next_five_temperature(city){
+    var arr1=[];
+    arr1.push(weatherdata[city].temperature);
+    var arr = weatherdata[city].nextFiveHrs;
+    arr1 = arr1.concat(arr);
+    arr1.push(arr1[1]);
+    var arr_temperature=``;
+    for(var i=0;i<arr1.length;i++){
+        arr_temperature += (`<span><p id="weather_next1">${arr1[i]}</p></span>`);
+    }
+    document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
+}
+
+//function to display next five hours from original time
+
+function next_five_hour(current_time){
+    var arr_nextfivehours=``;
+    var hour = parseInt(current_time.slice(0,2));
+    arr_nextfivehours += (`<span><p id="now">Now</p></span><span></span>`)
+    for(var i=0; i<5 ;i++){
+        if(current_time.split(' ')[1] == 'PM'){
+            if(hour+1+i >12){
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}PM</p></span><span></span>`)
+            }
+            else{
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1}PM</p></span><span></span>`)
+            }
+        }
+        else{
+            if(hour+1+i >12){
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}AM</p></span><span></span>`)
+            }
+            else{
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1}AM</p></span><span></span>`)
+            }        
+        }
+    }
+    document.getElementById("grid-item-3_row1_list1").innerHTML = arr_nextfivehours;
+
+}
+
 //function to change weather icons based on temperature
 function weather_icon(city){
     var arr1=[];
     arr1.push(weatherdata[city].temperature);
     var arr = weatherdata[city].nextFiveHrs;
     arr1 = arr1.concat(arr);
+    arr1.push(arr1[1])
     var arr_weather=``;
     for(var i=0;i<arr1.length;i++){
         var temp=arr1[i].split('°')[0];
@@ -94,7 +151,5 @@ function weather_icon(city){
             ><span></span>`; 
         }
     }
-    arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/windyIcon.svg" /></span
-            ><span></span>`; 
     document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
 }

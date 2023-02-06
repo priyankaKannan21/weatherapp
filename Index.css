@@ -28,7 +28,7 @@ body {
     margin-top: 5px;
     width: 70px;
   }
-.grid-item_grid-item-1 > .grid-item-1_grid2 > .city {
+.grid-item_grid-item-1 > .grid-item-1_grid2 > #city {
     background-color: rgba(0, 0, 0, 0.5);
     border: none;
     color: #fff;
@@ -36,7 +36,9 @@ body {
     font-family: Cordia New;
     font-size: 20px;
     margin-top: 20px;
-    padding: 15px 40px;
+    padding: 10px 10px;
+    width: 180px;
+    height: 35px;
     text-align: left;
   }
 .grid-item_grid-item-1 > .grid-item-1_grid4 {
@@ -242,6 +244,8 @@ body {
 .grid_item2 img {
     cursor: pointer;
     width: 30px;
+    height: 30px;
+    margin-top: 15px;
   }
 .grid_item2 #top_cities {
     font-family: Cordia New;
