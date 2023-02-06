@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WeatherApp</title>
+    <link rel="stylesheet" href="Index.css" />
+  </head>
+  <body>
+    <!-- Top Section of the WeatherApp -->
+    <div class="container">
+      <!-- top-left section of WeatherApp -->
+      <div class="grid-item_grid-item-1">
+        <div class="grid-item-1_grid1">
+          <img id ="city_icon" src="/Icons_for_cities/anadyr.svg" />
+        </div>
+        <div class="grid-item-1_grid2">
+          <select name="city" class="city" onchange="weather()">
+            <option value="select_city">---Select City---</option>
+          </select>
+        </div>
+        <div class="grid-item-1_grid3"></div>
+        <div class="grid-item-1_grid4">
+          <div class="time_div">
+          <p id="time">10:10:44</p>
+          <p id="img-time"><img src="/General_Images_&_Icons/amState.svg" /></p>
+          </div>
+          <p id="date" style="color: #fff">01-Mar-2020</p>
+        </div>
+      </div>
+      <!-- top-middle section of WeatherApp -->
+      <div class="grid-item_grid-item-2">
+        <div class="grid-item-2_grid1">
+          Temp °C
+          <p id="temp_c">25 C</p>
+        </div>
+        <div class="grid-item-2_grid2">
+          Humiditiy
+          <p id="humidity">26%</p>
+        </div>
+        <div class="grid-item-2_grid3">
+          Temp F
+          <p id="faren_f">78 F</p>
+        </div>
+        <div class="grid-item-2_grid4">
+          Precipitation
+          <p id="preci">0%</p>
+        </div>
+      </div>
+      <!-- top-right section of WeatherApp -->
+      <div class="grid-item_grid-item-3">
+        <div id="grid-item-3_row1">
+          <div id="grid-item-3_row1_list1">
+            <span><p id="now">Now</p></span><span></span> <span><p id="time1">11AM</p></span><span></span>
+            <span><p id="time2">12PM</p></span><span></span> <span><p id="time3">1PM</p></span><span></span>
+            <span><p id="time4">2PM</p></span><span></span> <span><p id="time5">3PM</p></span><span></span>
+          </div>
+          <div id="grid-item-3_row1_list2">
+            <span>|</span><span>|</span><span>|</span><span>|</span
+            ><span>|</span><span>|</span><span>|</span><span>|</span
+            ><span>|</span><span>|</span><span>|</span>
+          </div>
+          <div id="grid-item-3_row1_list3">
+            <!-- <span><img id="weather_icon1" src="/Weather_Icons/windyIcon.svg" /></span
+            ><span></span>
+            <span><img id="weather_icon2" src="/Weather_Icons/cloudyIcon.svg" /></span
+            ><span></span>
+            <span><img id="weather_icon3" src="/Weather_Icons/windyIcon.svg" /></span
+            ><span></span>
+            <span><img id="weather_icon4" src="/Weather_Icons/rainyIconBlack.svg" /></span
+            ><span></span>
+            <span><img id="weather_icon5" src="/Weather_Icons/windyIcon.svg" /></span
+            ><span></span>
+            <span><img id="weather_icon6" src="/Weather_Icons/sunnyIcon.svg" /></span
+            ><span></span> -->
+          </div>
+          <div id="grid-item-3_row1_list4">
+            <span><p id="weather_next1">6</p></span>
+            <span><p id="weather_next2">7</p></span>
+            <span><p id="weather_next3">7</p></span>
+            <span><p id="weather_next4">8</p></span>
+            <span><p id="weather_next5">8</p></span>
+            <span><p id="weather_next6">6</p></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Middle Section of the WeatherApp -->
+    <div class="container1">
+      <div class="grid_items">
+        <!-- top header and icons on middle section in WeatherApp -->
+        <div class="grid_item1">
+          <p>Top cities around world</p>
+        </div>
+        <div class="grid_item2">
+          <img src="/Weather_Icons/sunnyIcon.svg" />
+          <img src="/Weather_Icons/snowflakeIcon.svg" />
+          <img src="/Weather_Icons/rainyIcon.svg" />
+          <label id="top_cities">Display Top</label
+          ><input type="number" id="top_cities_num" min="1" max="7" />
+        </div>
+      </div>
+      <!-- Card view of cities  based on weather on middle section in WeatherApp -->
+      <div class="grid_items_1">
+        <div class="grid_boxes">
+          <div id="city"><p>Perth</p></div>
+          <div class="weather">
+            <img src="/Weather_Icons/sunnyIcon.svg" />&nbsp
+            <p>25°C</p>
+          </div>
+          <div class="weather_items">
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
+              <p>53%</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/windyIcon.svg" />&nbsp
+              <p>53 Km/hr</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+              <p>10%</p>
+            </div>
+          </div>
+          <div class="city_img"></div>
+        </div>
+        <div class="grid_boxes">
+          <div id="city"><p>Perth</p></div>
+          <div class="weather">
+            <img src="/Weather_Icons/sunnyIcon.svg" />&nbsp
+            <p>25°C</p>
+          </div>
+          <div class="weather_items">
+            <div class="weather_items_child">
+              <img src="/Weather_Ions/humidityIcon.svg" />&nbsp
+              <p>53%</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/windyIcon.svg" />&nbsp
+              <p>53 Km/hr</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+              <p>10%</p>
+            </div>
+          </div>
+          <div class="city_img"></div>
+        </div>
+        <div class="grid_boxes">
+          <div id="city"><p>Perth</p></div>
+          <div class="weather">
+            <img src="/Weather_Icons/sunnyIcon.svg" />&nbsp
+            <p>25°C</p>
+          </div>
+          <div class="weather_items">
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
+              <p>53%</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/windyIcon.svg" />&nbsp
+              <p>53 Km/hr</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+              <p>10%</p>
+            </div>
+          </div>
+          <div class="city_img"></div>
+        </div>
+        <div class="grid_boxes">
+          <div id="city"><p>Perth</p></div>
+          <div class="weather">
+            <img src="/Weather_Icons/sunnyIcon.svg" />&nbsp
+            <p>25°C</p>
+          </div>
+          <div class="weather_items">
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
+              <p>53%</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/windyIcon.svg" />&nbsp
+              <p>53 Km/hr</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+              <p>10%</p>
+            </div>
+          </div>
+          <div class="city_img"></div>
+        </div>
+        <div class="grid_boxes">
+          <div id="city"><p>Perth</p></div>
+          <div class="weather">
+            <img src="/Weather_Icons/sunnyIcon.svg" />&nbsp
+            <p>25°C</p>
+          </div>
+          <div class="weather_items">
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
+              <p>53%</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/windyIcon.svg" />&nbsp
+              <p>53 Km/hr</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+              <p>10%</p>
+            </div>
+          </div>
+          <div class="city_img"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom Section of the WeatherApp -->
+    <div class="container2">
+      <!-- Header part of Bottom Section in WeatherApp -->
+      <div class="grid_head">
+        <div class="grid_head_left">
+          <p>Cities across continents at a Glance</p>
+        </div>
+        <div class="grid_head_right">
+          <p>
+            Continent Name
+            <img src="/General_Images_&_Icons/arrowDown.svg" />
+            &nbsp&nbsp Temperature
+            <img src="/General_Images_&_Icons/arrowUp.svg" />
+          </p>
+        </div>
+      </div>
+      <!-- Card view bottom section in WeatherApp -->
+      <div class="grid_boxes_1">
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_cons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+        <div class="box1-ingrid">
+          <div id="box1-ingrid_c1">
+            <p id="p_1">Asia</p>
+            <p id="p_2">Delhi, 10: 10 AM</p>
+          </div>
+          <div id="box1-ingrid_c2">
+            <p id="p2_1">38°C</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Json and Script files added-->
+    <script src="/files/data.json"></script>
+    <script src="Index.js"></script>
+  </body>
+</html>
