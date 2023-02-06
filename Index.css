@@ -3,19 +3,21 @@ body {
   padding: 0;
   font-family: Cordia New;
 }
+/* Top section CSS */
 .container {
   /* max-width: 100%; */
   height: 250px;
   grid-template-columns: 25% 20% 55%;
   display: grid;
   background: linear-gradient(rgba(2, 2, 2, 0.01), rgba(7, 6, 6, 0.01)),
-    url("/General\ Images\ &\ Icons/background.svg");
+    url("/General_Images_&_Icons/background.svg");
   opacity: 1;
   background-repeat: no-repeat;
   background-size: cover;
   margin-top: -10px;
   justify-items: center;
 }
+/* Top left section CSS */
 .container > .grid-item_grid-item-1 {
   display: grid;
   grid-template-columns: 100px 200px;
@@ -50,6 +52,7 @@ body {
 .grid-item_grid-item-1 > .grid-item-1_grid4 > p {
   line-height: 0;
 }
+/* Top middle section CSS */
 .container > .grid-item_grid-item-2 {
   display: grid;
   grid-template-columns: 100px 100px;
@@ -111,6 +114,7 @@ body {
   color: #fff;
   text-align: center;
 }
+/* Top right section CSS */
 .container > .grid-item_grid-item-3 {
   padding: 30px 0px 0px 0px;
   line-height: 40px;
@@ -169,6 +173,7 @@ body {
   text-align: left;
   font-size: 30px;
 }
+/* media query for top section */
 @media screen and (min-width: 600px) and (max-width: 1350px) {
   .container {
     grid-template-columns: 50% 50%;
@@ -191,7 +196,7 @@ body {
     margin-top: -15px;
   }
 }
-
+/* Middle section CSS */
 .container1 {
   max-width: 100%;
   min-height: 300px;
@@ -202,6 +207,7 @@ body {
   border-top-left-radius: 25px;
   padding: 20px 80px 0px 80px;
 }
+/* Middle section header CSS */
 .container1 .grid_items {
   grid-template-columns: 55% 45%;
   display: grid;
@@ -240,6 +246,7 @@ body {
   background-color: rgb(88, 85, 85);
   cursor: pointer;
 }
+/* Middle section card view CSS */
 .grid_items_1 {
   grid-template-columns: 18% 18% 18% 18% 18%;
   grid-template-rows: 230px;
@@ -255,7 +262,6 @@ body {
   grid-template-columns: 50% 50%;
   grid-template-rows: 30% 70%;
   background-color: rgb(45, 46, 46);
-  cursor: pointer;
   transition: transform 2s;
 }
 .grid_items_1 .grid_boxes:hover {
@@ -291,6 +297,7 @@ body {
   margin-top: 25px;
   width: 30px;
 }
+/* media query for middle section */
 
 @media only screen and (min-width: 600px) and (max-width: 1500px) {
   .grid_items_1 {
@@ -311,6 +318,8 @@ body {
   }
 }
 
+/* Bottom section CSS */
+
 .container2 {
   max-width: 100%;
   height: 500px;
@@ -318,6 +327,8 @@ body {
   padding: 20px 80px 0px 70px;
   color: rgb(207, 204, 204);
 }
+/* Bottom section header part CSS */
+
 .grid_head {
   grid-template-columns: 60% 40%;
   display: grid;
@@ -346,6 +357,8 @@ body {
 .grid_head_right p {
   font-size: 20px;
 }
+/* Bottom section grid part CSS */
+
 .grid_boxes_1 {
   display: grid;
   grid-template-columns: 30% 30% 30%;
@@ -360,7 +373,6 @@ body {
   grid-template-columns: 70% 30%;
   background-color: rgb(89, 90, 90);
   padding: 0px 15px 0px 15px;
-  cursor: pointer;
 }
 .box1-ingrid:hover {
   transform: scale(1.1);
@@ -391,6 +403,7 @@ body {
 #box1-ingrid_c2 {
   text-align: right;
 }
+/* media query for Bottom section */
 
 @media only screen and (min-width: 600px) and (max-width: 1400px) {
   .container2 {
