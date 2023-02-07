@@ -28,9 +28,10 @@ setInterval(weather,1000);
 //function for display waether content based on city
 
 function weather(){
+    var keys=Object.keys(weatherdata);
     var selected_city = document.getElementById("city").value;
 
-    if(!selected_city){
+    if(!keys.includes(selected_city)){
         document.querySelector("#temp_c").innerHTML = "Nil";
         document.querySelector("#humidity").innerHTML = "Nil";
         document.querySelector("#faren_f").innerHTML = "Nil";
@@ -152,4 +153,24 @@ function weather_icon(city){
         }
     }
     document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
+}
+//onclick function for sunny icon in middle section
+function onclick_func1(){
+    document.getElementById("sunny").style.borderBottom = '2px solid blue';
+    document.getElementById("winter").style.borderBottom = 'none';
+    document.getElementById("rainy").style.borderBottom = 'none';
+}
+
+//onclick function for winter icon in middle section
+function onclick_func2(){
+    document.getElementById("sunny").style.borderBottom = 'none';
+    document.getElementById("winter").style.borderBottom = '2px solid blue';
+    document.getElementById("rainy").style.borderBottom = 'none';
+}
+
+//onclick function for rainy icon in middle section
+function onclick_func3(){
+    document.getElementById("sunny").style.borderBottom = 'none';
+    document.getElementById("winter").style.borderBottom = 'none';
+    document.getElementById("rainy").style.borderBottom = '2px solid blue';
 }
