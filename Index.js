@@ -20,11 +20,9 @@ function weatherdatas(){
     }
     console.log(option);
     document.querySelector("#city_name").innerHTML = option;
-   
 }
 
 setInterval(weather,1000);
-
 //function for display waether content based on city
 
 function weather(){
@@ -36,9 +34,16 @@ function weather(){
         document.querySelector("#humidity").innerHTML = "Nil";
         document.querySelector("#faren_f").innerHTML = "Nil";
         document.querySelector("#preci").innerHTML = "Nil";
+        document.querySelector("#date").innerHTML = "Nil";
+        document.querySelector("#city_icon").src = "/General_Images_&_Icons/none.png"; 
+        document.getElementById("time").innerHTML = "Nil";
+        document.getElementById("am_pm_state").style.visibility="hidden"; 
+        change_data();
     
     }
     else{
+        document.getElementById("am_pm_state").style.visibility="visible"; 
+        document.getElementById("city").style.backgroundColor = "rgba(0, 0, 0, 0.5)";
         var temperature = weatherdata[selected_city].temperature;
         var humidity = weatherdata[selected_city].humidity;
         var farenheit = Math.round(((parseInt(weatherdata[selected_city].temperature))*(9/5))+32);
@@ -58,6 +63,23 @@ function weather(){
         time_formart(selected_city);
         next_five_temperature(selected_city);
     }
+}
+
+//fucntion to change null values when city is not selected
+function change_data(){    
+    var arr_temperature=``;
+    var arr_weather=``;
+    arr_nextfivehours=``;
+    for(var i=0;i<6;i++){
+        arr_temperature += `<span><p id="weather_next1">Nil</p></span>`;
+        arr_weather += `<span><img id="weather_icon1" src="/General_Images_&_Icons/none.png" /></span><span></span>`;
+        arr_nextfivehours += `<span><p id="now">Nil</p></span><span></span>`;
+        
+    }
+    document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
+    document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
+    document.getElementById("grid-item-3_row1_list1").innerHTML = arr_nextfivehours; 
+    document.getElementById("city").style.backgroundColor = "#c94c4c";
 }
 
 //function to format time
@@ -101,22 +123,22 @@ function next_five_temperature(city){
 function next_five_hour(current_time){
     var arr_nextfivehours=``;
     var hour = parseInt(current_time.slice(0,2));
-    arr_nextfivehours += (`<span><p id="now">Now</p></span><span></span>`)
+    arr_nextfivehours += (`<span><p id="now">Now</p></span><span></span>`);
     for(var i=0; i<5 ;i++){
         if(current_time.split(' ')[1] == 'PM'){
             if(hour+1+i >12){
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}PM</p></span><span></span>`)
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}PM</p></span><span></span>`);
             }
             else{
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1}PM</p></span><span></span>`)
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1}PM</p></span><span></span>`);
             }
         }
         else{
             if(hour+1+i >12){
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}AM</p></span><span></span>`)
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}AM</p></span><span></span>`);
             }
             else{
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1}AM</p></span><span></span>`)
+                arr_nextfivehours += (`<span><p id="now">${hour+i+1}AM</p></span><span></span>`);
             }        
         }
     }
@@ -153,24 +175,4 @@ function weather_icon(city){
         }
     }
     document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
-}
-//onclick function for sunny icon in middle section
-function onclick_func1(){
-    document.getElementById("sunny").style.borderBottom = '2px solid blue';
-    document.getElementById("winter").style.borderBottom = 'none';
-    document.getElementById("rainy").style.borderBottom = 'none';
-}
-
-//onclick function for winter icon in middle section
-function onclick_func2(){
-    document.getElementById("sunny").style.borderBottom = 'none';
-    document.getElementById("winter").style.borderBottom = '2px solid blue';
-    document.getElementById("rainy").style.borderBottom = 'none';
-}
-
-//onclick function for rainy icon in middle section
-function onclick_func3(){
-    document.getElementById("sunny").style.borderBottom = 'none';
-    document.getElementById("winter").style.borderBottom = 'none';
-    document.getElementById("rainy").style.borderBottom = '2px solid blue';
 }
