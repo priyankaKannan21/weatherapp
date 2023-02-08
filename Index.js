@@ -8,6 +8,8 @@ fetch('/files/data.json')
     weatherdatas();
     weather_icon('Anadyr');
     time_formart('Anadyr');
+    select_cities_based_on_weather();
+    onclick_func1();
 })
 
 //function for display content in drop box
@@ -171,4 +173,92 @@ function weather_icon(city){
         }
     }
     document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
+}
+
+//onclick function for sunny icon in middle section
+function onclick_func1(){
+    document.getElementById("sunny").style.borderBottom = '2px solid blue';
+    document.getElementById("winter").style.borderBottom = 'none';
+    document.getElementById("rainy").style.borderBottom = 'none';
+    city_based_weather_cardview(sunny_cities,"sunnyIcon");
+}
+
+//onclick function for winter icon in middle section
+function onclick_func2(){
+    document.getElementById("sunny").style.borderBottom = 'none';
+    document.getElementById("winter").style.borderBottom = '2px solid blue';
+    document.getElementById("rainy").style.borderBottom = 'none';
+    city_based_weather_cardview(winter_cities,"snowflakeIcon");
+}
+
+//onclick function for rainy icon in middle section
+function onclick_func3(){
+    document.getElementById("sunny").style.borderBottom = 'none';
+    document.getElementById("winter").style.borderBottom = 'none';
+    document.getElementById("rainy").style.borderBottom = '2px solid blue';
+    city_based_weather_cardview(rainy_cities,"rainyIcon");
+
+}
+
+console.log(sunny_cities);
+
+//global declaration of cities array based on weather
+var sunny_cities=[];
+var winter_cities=[];
+var rainy_cities=[];
+
+//function to seperate cities based on weather
+function select_cities_based_on_weather(){
+    var keys = Object.keys(weatherdata);
+    for(var i=0;i<keys.length;i++){
+        var t = parseInt(weatherdata[keys[i]].temperature);
+        var h = parseInt(weatherdata[keys[i]].humidity);
+        var p = parseInt(weatherdata[keys[i]].precipitation);
+        if((t > 29) && (h < 50) && (p >= 50)){
+            sunny_cities.push(keys[i]);
+        }
+        if((t >= 20 && t <= 28) && (h > 50) && (p <50)){
+            winter_cities.push(keys[i]);
+        }
+        if((t < 20) && (h >= 50)){
+            rainy_cities.push(keys[i]);
+        }
+    }
+}
+
+//function to show cardview of cities of selected weather 
+function city_based_weather_cardview(weather_city,icon_weather){
+    city_based_on_weather = ``;
+    for(var i=0;i<weather_city.length;i++)
+    {
+        var timezone = weatherdata[weather_city[i]].timeZone;
+        var current_time= new Date().toLocaleString("en-US",{
+            timeZone: timezone,
+            timeStyle: "medium",
+            hourCycle: "h12",
+        });
+        city_based_on_weather +=  `<div class="grid_boxes">
+        <div id="city"><p>${weather_city[i]}</p></div>
+        <div class="weather">
+          <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
+          <p>${weatherdata[weather_city[i]].temperature}</p>
+        </div>
+        <div class="weather_items">
+          <div class="weather_items_child1">
+            <p id="time_city">${current_time.split(' ')[0]}</p>
+            <p id="date_city">${(weatherdata[weather_city[i]].dateAndTime).split(',')[0]}</p>
+          </div>
+          <div class="weather_items_child">
+            <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
+            <p id="city_humidity">${weatherdata[weather_city[i]].humidity}</p>
+          </div>
+          <div class="weather_items_child">
+            <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+            <p id="city_precipitation">${weatherdata[weather_city[i]].precipitation}</p>
+          </div>
+        </div>
+        <div class="city_img"><img src="/Icons_for_cities/${weather_city[i]}.svg"></div>
+      </div>`
+    }
+    document.querySelector(".grid_items_1").innerHTML = city_based_on_weather;
 }
