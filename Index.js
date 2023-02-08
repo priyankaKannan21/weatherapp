@@ -11,7 +11,6 @@ fetch('/files/data.json')
 })
 
 //function for display content in drop box
-
 function weatherdatas(){   
     var keys=Object.keys(weatherdata);
     var option=``;
@@ -24,7 +23,6 @@ function weatherdatas(){
 
 setInterval(weather,1000);
 //function for display waether content based on city
-
 function weather(){
     var keys=Object.keys(weatherdata);
     var selected_city = document.getElementById("city").value;
@@ -119,7 +117,6 @@ function next_five_temperature(city){
 }
 
 //function to display next five hours from original time
-
 function next_five_hour(current_time){
     var arr_nextfivehours=``;
     var hour = parseInt(current_time.slice(0,2));
@@ -143,7 +140,6 @@ function next_five_hour(current_time){
         }
     }
     document.getElementById("grid-item-3_row1_list1").innerHTML = arr_nextfivehours;
-
 }
 
 //function to change weather icons based on temperature

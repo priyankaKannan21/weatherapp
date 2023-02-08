@@ -268,7 +268,6 @@ body {
     grid-template-columns: 18% 18% 18% 18% 18%;
     grid-template-rows: 230px;
     overflow: hidden;
-    justify-content: center;
   }
 .grid_items_1 .grid_boxes {
     background-color: rgb(45, 46, 46);
@@ -281,7 +280,8 @@ body {
     transition: transform 2s;
   }
   .grid_items_1 .grid_boxes #city{
-    font-size: 30px;
+    font-size: 25px;
+    margin-top: -18px;
   }
 .grid_items_1 .grid_boxes:hover {
     box-shadow: 3px 4px 10px rgb(252, 214, 44);
@@ -300,10 +300,12 @@ body {
 .weather_items .weather_items_child1 {
   display: flex;
   flex-direction: column;
-  margin-top: -10px;
+  margin-top: -15px;
 }
 .weather_items .weather_items_child1 p{
   margin:3px;
+  font-size: 18px;
+  color: #cbc9c0;
 }
 #city_humidity{
   margin-top: 20px;
@@ -321,8 +323,8 @@ body {
     margin-top: -25px;
   }
 .grid_boxes .weather img {
-    margin-top: 10px;
-    margin-left: 20px;
+    margin-top: -1px;
+    margin-left: 25px;
     width: 25px;
   }
 /* Media query for Middle section */
