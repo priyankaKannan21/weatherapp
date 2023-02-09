@@ -83,11 +83,16 @@
           <img id="winter" onclick="onclick_func2()" src="/Weather_Icons/snowflakeIcon.svg" />
           <img id="rainy" onclick="onclick_func3()" src="/Weather_Icons/rainyIcon.svg" />
           <label id="top_cities">Display Top</label
-          ><input type="number" id="top_cities_num" min="1" max="7" />
+          ><input type="number" id="top_cities_num" min="3" max="10" onchange="display_top_city()" value="3" />
         </div>
       </div>
       <!-- Card view of cities  based on weather on middle section in WeatherApp -->
-      <div class="grid_items_1">
+      <div id="card_view_cities">
+        <button id ="left_button" onclick="move_left()"><</button>
+        <div class="grid_items_1">
+        
+        </div>
+        <button id ="right_button" onclick="move_right()">></button>
       </div>
     </div>
     <!-- Bottom Section of the WeatherApp -->
@@ -165,7 +170,7 @@
           </div>
           <div id="box1-ingrid_c2">
             <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_cons/humidityIcon.svg" />53%</p>
+            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
           </div>
         </div>
         <div class="box1-ingrid">
