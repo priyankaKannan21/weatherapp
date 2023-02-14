@@ -16,7 +16,6 @@
           <input
             list="city_name"
             id="city"
-            onchange="weather()"
             value="Anadyr"
           />
           <datalist id="city_name"> </datalist>
@@ -86,17 +85,14 @@
         <div class="grid_item2">
           <img
             id="sunny"
-            onclick="onclick_func1()"
             src="/Weather_Icons/sunnyIcon.svg"
           />
           <img
             id="winter"
-            onclick="onclick_func2()"
             src="/Weather_Icons/snowflakeIcon.svg"
           />
           <img
             id="rainy"
-            onclick="onclick_func3()"
             src="/Weather_Icons/rainyIcon.svg"
           />
           <label id="top_cities">Display Top</label
@@ -105,16 +101,15 @@
             id="top_cities_num"
             min="3"
             max="10"
-            onchange="display_top_city()"
             value="3"
           />
         </div>
       </div>
       <!-- Card view of cities  based on weather on middle section in WeatherApp -->
       <div id="card_view_cities">
-        <button id="left_button" onclick="move_left()"><</button>
+        <button id="left_button"><</button>
         <div class="grid_items_1"></div>
-        <button id="right_button" onclick="move_right()">></button>
+        <button id="right_button">></button>
       </div>
     </div>
     <!-- Bottom Section of the WeatherApp -->
@@ -125,138 +120,19 @@
           <p>Cities across continents at a Glance</p>
         </div>
         <div class="grid_head_right">
-          <p onclick="Print_12_cities('continent')">
+          <p id="print_based_continent">
             Continent Name
             <img id="con_arrow" src="/General_Images_&_Icons/arrowDown.svg" />
           </p>
           &nbsp&nbsp
-          <p onclick="Print_12_cities('temperature')">
+          <p id="print_based_temperature">
             Temperature <img id="temp_arrow" src="/General_Images_&_Icons/arrowdown.svg" />
           </p>
         </div>
       </div>
       <!-- Card view bottom section in WeatherApp -->
       <div class="grid_boxes_1">
-        <!-- <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div>
-        <div class="box1-ingrid">
-          <div id="box1-ingrid_c1">
-            <p id="p_1">Asia</p>
-            <p id="p_2">Delhi, 10: 10 AM</p>
-          </div>
-          <div id="box1-ingrid_c2">
-            <p id="p2_1">38°C</p>
-            <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
-          </div>
-        </div> -->
+        
       </div>
     </div>
     <!-- Json and Script files added-->
