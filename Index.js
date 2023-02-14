@@ -2,33 +2,71 @@
 fetch("/files/data.json")
   .then((data) => data.json())
   .then((result) => {
-    weatherdata = result;
+    let data_object = new weather_data(result);
     console.log(result);
-    weatherdatas();
-    weather_icon("Anadyr");
-    time_formart("Anadyr");
-    select_cities_based_on_weather();
-    onclick_func1();
-    Print_12_cities("continent");
+    data_object.weatherdatas();
+    data_object.weather();
+    data_object.select_cities_based_on_weather();
+    data_object.onclick_func1();
+    data_object.Print_12_cities("continent");
   });
 
-//function for display content in drop box
-function weatherdatas() {
-  var keys = Object.keys(weatherdata);
-  var option = ``;
-  for (var i = 0; i < keys.length; i++) {
-    option += `<option value=${keys[i]}></option>`;
-  }
-  document.querySelector("#city_name").innerHTML = option;
+//function which contains all global variables can be accessed by using this keyword
+function weather_data(data) {
+  this.weatherdata = data;
+  this.keys = Object.keys(this.weatherdata);
+  this.weather_string;
+  this.sunny_cities = {};
+  this.winter_cities = {};
+  this.rainy_cities = {};
+  this.count_num = 3;
+  this.cont_var = false;
+  this.temp_var = false;
+  this.temp_data, this.cont_data;
+  this.time_Zone_city = [];
+  setInterval(this.weather.bind(this), 1000);
 }
 
-setInterval(weather, 1000);
-//function for display waether content based on city
-function weather() {
-  var keys = Object.keys(weatherdata);
-  var selected_city = document.getElementById("city").value;
+//function for display content in drop box
+weather_data.prototype.weatherdatas = function () {
+  let option = ``;
+  for (let i = 0; i < this.keys.length; i++) {
+    option += `<option value=${this.keys[i]}></option>`;
+  }
+  document.querySelector("#city_name").innerHTML = option;
+  document
+    .getElementById("city")
+    .addEventListener("input", this.weather.bind(this));
+  document
+    .getElementById("sunny")
+    .addEventListener("click", this.onclick_func1.bind(this));
+  document
+    .getElementById("winter")
+    .addEventListener("click", this.onclick_func2.bind(this));
+  document
+    .getElementById("rainy")
+    .addEventListener("click", this.onclick_func3.bind(this));
+  document
+    .getElementById("top_cities_num")
+    .addEventListener("input", this.display_top_city.bind(this));
+  document
+    .getElementById("left_button")
+    .addEventListener("click", this.move_left.bind(this));
+  document
+    .getElementById("right_button")
+    .addEventListener("click", this.move_right.bind(this));
+  document
+    .getElementById("print_based_continent")
+    .addEventListener("click", this.Print_12_cities.bind(this, "continent"));
+  document
+    .getElementById("print_based_temperature")
+    .addEventListener("click", this.Print_12_cities.bind(this, "temperature"));
+};
 
-  if (!keys.includes(selected_city)) {
+//function for display waether content based on city
+weather_data.prototype.weather = function () {
+  let selected_city = document.getElementById("city").value;
+  if (!this.keys.includes(selected_city)) {
     document.querySelector("#temp_c").innerHTML = "Nil";
     document.querySelector("#humidity").innerHTML = "Nil";
     document.querySelector("#faren_f").innerHTML = "Nil";
@@ -38,21 +76,21 @@ function weather() {
       "/General_Images_&_Icons/none.png";
     document.getElementById("time").innerHTML = "Nil";
     document.getElementById("am_pm_state").style.visibility = "hidden";
-    change_data();
+    this.change_data();
   } else {
     document.getElementById("am_pm_state").style.visibility = "visible";
     document.getElementById("city").style.backgroundColor =
       "rgba(0, 0, 0, 0.5)";
-    var temperature = weatherdata[selected_city].temperature;
-    var humidity = weatherdata[selected_city].humidity;
-    var farenheit = Math.round(
-      parseInt(weatherdata[selected_city].temperature) * (9 / 5) + 32
+    let temperature = this.weatherdata[selected_city].temperature;
+    let humidity = this.weatherdata[selected_city].humidity;
+    let farenheit = Math.round(
+      parseInt(this.weatherdata[selected_city].temperature) * (9 / 5) + 32
     );
-    var precipitation = weatherdata[selected_city].precipitation;
-    var date_time = weatherdata[selected_city].dateAndTime;
-    var date_time_array = date_time.split(", ");
-    var date = date_time_array[0];
-    new_date = date_format(date);
+    let precipitation = this.weatherdata[selected_city].precipitation;
+    let date_time = this.weatherdata[selected_city].dateAndTime;
+    let date_time_array = date_time.split(", ");
+    let date = date_time_array[0];
+    new_date = this.date_format(date);
 
     document.querySelector("#temp_c").innerHTML = temperature;
     document.querySelector("#humidity").innerHTML = humidity;
@@ -62,18 +100,18 @@ function weather() {
     document.querySelector(
       "#city_icon"
     ).src = `/Icons_for_cities/${selected_city}.svg`;
-    weather_icon(selected_city);
-    time_formart(selected_city);
-    next_five_temperature(selected_city);
+    this.weather_icon(selected_city);
+    this.time_formart(selected_city);
+    this.next_five_temperature(selected_city);
   }
-}
+};
 
 //fucntion to change null values when city is not selected
-function change_data() {
-  var arr_temperature = ``;
-  var arr_weather = ``;
+weather_data.prototype.change_data = function () {
+  let arr_temperature = ``;
+  let arr_weather = ``;
   arr_nextfivehours = ``;
-  for (var i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     arr_temperature += `<span><p id="weather_next1">Nil</p></span>`;
     arr_weather += `<span><img id="weather_icon1" src="/General_Images_&_Icons/none.png" /></span><span></span>`;
     arr_nextfivehours += `<span><p id="now">Nil</p></span><span></span>`;
@@ -83,29 +121,28 @@ function change_data() {
   document.getElementById("grid-item-3_row1_list1").innerHTML =
     arr_nextfivehours;
   document.getElementById("city").style.backgroundColor = "#c94c4c";
-}
+};
 
 //function to format time
-function time_formart(city) {
-  var timezone = weatherdata[city].timeZone;
-  var current_time = new Date().toLocaleString("en-US", {
-    timeZone: timezone,
+weather_data.prototype.time_formart = function (city) {
+  let current_time = new Date().toLocaleString("en-US", {
+    timeZone: this.weatherdata[city].timeZone,
     timeStyle: "medium",
     hourCycle: "h12",
   });
-  var morn_even =
+  let morn_even =
     parseInt(current_time.slice(0, 2)) >= 12 ? "pmState" : "amState";
   document.getElementById("time").innerHTML = current_time.split(" ")[0];
   document.getElementById(
     "am_pm_state"
   ).src = `/General_Images_&_Icons/${morn_even}.svg`;
-  next_five_hour(current_time);
-}
+  this.next_five_hour(current_time);
+};
 
 //function to format date
-function date_format(date) {
-  var arr = date.split("/");
-  var array_month = [
+weather_data.prototype.date_format = function (date) {
+  let arr = date.split("/");
+  let array_month = [
     "Jan",
     "Feb",
     "Mar",
@@ -121,28 +158,28 @@ function date_format(date) {
   ];
   new_date = arr[1] + "-" + array_month[parseInt(arr[0])] + "-" + arr[2];
   return new_date;
-}
+};
 
 //function to display next five hours temperature
-function next_five_temperature(city) {
-  var arr1 = [];
-  arr1.push(weatherdata[city].temperature);
-  var arr = weatherdata[city].nextFiveHrs;
+weather_data.prototype.next_five_temperature = function (city) {
+  let arr1 = [];
+  arr1.push(this.weatherdata[city].temperature);
+  let arr = this.weatherdata[city].nextFiveHrs;
   arr1 = arr1.concat(arr);
   arr1.push(arr1[1]);
-  var arr_temperature = ``;
-  for (var i = 0; i < arr1.length; i++) {
+  let arr_temperature = ``;
+  for (let i = 0; i < arr1.length; i++) {
     arr_temperature += `<span><p id="weather_next1">${arr1[i]}</p></span>`;
   }
   document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
-}
+};
 
 //function to display next five hours from original time
-function next_five_hour(current_time) {
-  var arr_nextfivehours = ``;
-  var hour = parseInt(current_time.slice(0, 2));
+weather_data.prototype.next_five_hour = function (current_time) {
+  let arr_nextfivehours = ``;
+  let hour = parseInt(current_time.slice(0, 2));
   arr_nextfivehours += `<span><p id="now">Now</p></span><span></span>`;
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     if (current_time.split(" ")[1] == "PM") {
       if (hour + 1 + i > 12) {
         arr_nextfivehours += `<span><p id="now">${
@@ -167,71 +204,76 @@ function next_five_hour(current_time) {
   }
   document.getElementById("grid-item-3_row1_list1").innerHTML =
     arr_nextfivehours;
-}
+};
 
 //function to change weather icons based on temperature
-function weather_icon(city) {
-  var arr1 = [];
-  arr1.push(weatherdata[city].temperature);
-  var arr = weatherdata[city].nextFiveHrs;
+weather_data.prototype.weather_icon = function (city) {
+  let arr1 = [];
+  arr1.push(this.weatherdata[city].temperature);
+  let arr = this.weatherdata[city].nextFiveHrs;
   arr1 = arr1.concat(arr);
   arr1.push(arr1[1]);
-  var arr_weather = ``;
-  for (var i = 0; i < arr1.length; i++) {
-    var temp = arr1[i].split("°")[0];
-    // var st= "weather_icon"+ (i+1);
+  let arr_weather = ``;
+  for (let i = 0; i < arr1.length; i++) {
+    let temp = arr1[i].split("°")[0];
     if (parseInt(temp) > 29) {
       arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/sunnyIcon.svg" /></span
-            ><span></span>`;
+              ><span></span>`;
     } else if (parseInt(temp) >= 23 && parseInt(temp) <= 29) {
       arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/cloudyIcon.svg" /></span
-            ><span></span>`;
+              ><span></span>`;
     } else if (parseInt(temp) >= 18 && parseInt(temp) <= 22) {
       arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/windyIcon.svg" /></span
-            ><span></span>`;
+              ><span></span>`;
     } else {
       arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/rainyIcon.svg" /></span
-            ><span></span>`;
+              ><span></span>`;
     }
   }
   document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
-}
+};
 
-var weather_string;
-
-//onclick function for sunny icon in middle section
-function onclick_func1() {
-  weather_string = "sunny";
+//onclick function for sunny icon in top section
+weather_data.prototype.onclick_func1 = function () {
+  this.weather_string = "sunny";
   document.getElementById("sunny").style.borderBottom = "2px solid blue";
   document.getElementById("winter").style.borderBottom = "none";
   document.getElementById("rainy").style.borderBottom = "none";
-  select_cities_based_on_weather();
-
-  city_based_weather_cardview(sort_func(sunny_cities), "sunnyIcon");
-}
+  this.select_cities_based_on_weather();
+  this.city_based_weather_cardview(
+    this.sort_func(this.sunny_cities),
+    "sunnyIcon"
+  );
+};
 
 //onclick function for winter icon in middle section
-function onclick_func2() {
-  weather_string = "winter";
+weather_data.prototype.onclick_func2 = function () {
+  this.weather_string = "winter";
   document.getElementById("sunny").style.borderBottom = "none";
   document.getElementById("winter").style.borderBottom = "2px solid blue";
   document.getElementById("rainy").style.borderBottom = "none";
-  select_cities_based_on_weather();
-  city_based_weather_cardview(sort_func(winter_cities), "snowflakeIcon");
-}
+  this.select_cities_based_on_weather();
+  this.city_based_weather_cardview(
+    this.sort_func(this.winter_cities),
+    "snowflakeIcon"
+  );
+};
 
 //onclick function for rainy icon in middle section
-function onclick_func3() {
-  weather_string = "rainy";
+weather_data.prototype.onclick_func3 = function () {
+  this.weather_string = "rainy";
   document.getElementById("sunny").style.borderBottom = "none";
   document.getElementById("winter").style.borderBottom = "none";
   document.getElementById("rainy").style.borderBottom = "2px solid blue";
-  select_cities_based_on_weather();
-  city_based_weather_cardview(sort_func(rainy_cities), "rainyIcon");
-}
+  this.select_cities_based_on_weather();
+  this.city_based_weather_cardview(
+    this.sort_func(this.rainy_cities),
+    "rainyIcon"
+  );
+};
 
 //sort function for cities based on teamperature
-function sort_func(cities_data) {
+weather_data.prototype.sort_func = function (cities_data) {
   var cities_data_1 = cities_data;
   var city_temp = new Array();
   city_temp = Object.values(cities_data_1);
@@ -247,175 +289,165 @@ function sort_func(cities_data) {
     delete cities_data_1[cityname];
   }
   return city_name;
-}
-//global declaration of cities array based on weather
-var sunny_cities = {};
-var winter_cities = {};
-var rainy_cities = {};
+};
 
 //function to seperate cities based on weather
-function select_cities_based_on_weather() {
-  var keys = Object.keys(weatherdata);
-  for (var i = 0; i < keys.length; i++) {
-    var t = parseInt(weatherdata[keys[i]].temperature);
-    var h = parseInt(weatherdata[keys[i]].humidity);
-    var p = parseInt(weatherdata[keys[i]].precipitation);
+weather_data.prototype.select_cities_based_on_weather = function () {
+  for (var i = 0; i < this.keys.length; i++) {
+    var t = parseInt(this.weatherdata[this.keys[i]].temperature);
+    var h = parseInt(this.weatherdata[this.keys[i]].humidity);
+    var p = parseInt(this.weatherdata[this.keys[i]].precipitation);
     if (t > 29 && h < 50 && p >= 50) {
-      sunny_cities[keys[i]] = t;
+      this.sunny_cities[this.keys[i]] = t;
     }
     if (t >= 20 && t <= 28 && h > 50 && p < 50) {
-      winter_cities[keys[i]] = h;
+      this.winter_cities[this.keys[i]] = h;
     }
     if (t < 20 && h >= 50) {
-      rainy_cities[keys[i]] = p;
+      this.rainy_cities[this.keys[i]] = p;
     }
   }
-}
+};
 
 //function to show cardview of cities of selected weather
-function city_based_weather_cardview(weather_city, icon_weather) {
+weather_data.prototype.city_based_weather_cardview = function (
+  weather_city,
+  icon_weather
+) {
   city_based_on_weather = ``;
-  count_num = document.getElementById("top_cities_num").value;
-  for (var i = 0; i < Math.min(count_num, weather_city.length); i++) {
-    var timezone = weatherdata[weather_city[i]].timeZone;
+  this.count_num = document.getElementById("top_cities_num").value;
+  for (var i = 0; i < Math.min(this.count_num, weather_city.length); i++) {
     var current_time = new Date().toLocaleString("en-US", {
-      timeZone: timezone,
+      timeZone: this.weatherdata[weather_city[i]].timeZone,
       timeStyle: "medium",
       hourCycle: "h12",
     });
     city_based_on_weather += `<div class="grid_boxes">
-        <div id="city"><p>${weather_city[i]}</p></div>
-        <div class="weather">
-          <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
-          <p>${weatherdata[weather_city[i]].temperature}</p>
-        </div>
-        <div class="weather_items">
-          <div class="weather_items_child1">
-            <p id="time_city">${current_time.split(" ")[0]}</p>
-            <p id="date_city">${
-              weatherdata[weather_city[i]].dateAndTime.split(",")[0]
-            }</p>
+          <div id="city"><p>${weather_city[i]}</p></div>
+          <div class="weather">
+            <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
+            <p>${this.weatherdata[weather_city[i]].temperature}</p>
           </div>
-          <div class="weather_items_child">
-            <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
-            <p id="city_humidity">${weatherdata[weather_city[i]].humidity}</p>
+          <div class="weather_items">
+            <div class="weather_items_child1">
+              <p id="time_city">${current_time.split(" ")[0]}</p>
+              <p id="date_city">${
+                this.weatherdata[weather_city[i]].dateAndTime.split(",")[0]
+              }</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
+              <p id="city_humidity">${
+                this.weatherdata[weather_city[i]].humidity
+              }</p>
+            </div>
+            <div class="weather_items_child">
+              <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
+              <p id="city_precipitation">${
+                this.weatherdata[weather_city[i]].precipitation
+              }</p>
+            </div>
           </div>
-          <div class="weather_items_child">
-            <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
-            <p id="city_precipitation">${
-              weatherdata[weather_city[i]].precipitation
-            }</p>
-          </div>
-        </div>
-        <div class="city_img"><img src="/Icons_for_cities/${
-          weather_city[i]
-        }.svg"></div>
-      </div>`;
+          <div class="city_img"><img src="/Icons_for_cities/${
+            weather_city[i]
+          }.svg"></div>
+        </div>`;
   }
   document.querySelector(".grid_items_1").innerHTML = city_based_on_weather;
-  if (count_num <= 4) {
+  if (this.count_num <= 4) {
     document.getElementById("left_button").style.visibility = "hidden";
     document.getElementById("right_button").style.visibility = "hidden";
   } else {
     document.getElementById("left_button").style.visibility = "visible";
     document.getElementById("right_button").style.visibility = "visible";
   }
-}
-
-//function for scroll left button
-function move_left() {
-  document.querySelector(".grid_items_1").scrollBy(365, 0);
-}
-//function for scroll right button
-function move_right() {
-  document.querySelector(".grid_items_1").scrollBy(-365, 0);
-}
-
-var count_num;
+};
 
 //display top cities function for middle section
-function display_top_city() {
-  count_num = document.getElementById("top_cities_num").value;
-  if (weather_string == "sunny") onclick_func1();
-  if (weather_string == "winter") onclick_func2();
-  if (weather_string == "rainy") onclick_func3();
-}
-
-let cont_var = false;
-let temp_var = false;
-let temp_data, cont_data;
-//function to display top 12 cities in bottom section
-function Print_12_cities(item) {
-  if (item == "temperature") {
-    temp_var = !temp_var;
-    if(temp_var){
-      document.getElementById("temp_arrow").src = `/General_Images_&_Icons/arrowup.svg`;
-    }else{
-      document.getElementById("temp_arrow").src = `/General_Images_&_Icons/arrowdown.svg`;
-    }
-    temp_data = temp_var ? -1 : 1;
-  } else {
-    cont_var = !cont_var;
-    if(cont_var){
-      document.getElementById("con_arrow").src = `/General_Images_&_Icons/arrowup.svg`;
-    }else{
-      document.getElementById("con_arrow").src = `/General_Images_&_Icons/arrowdown.svg`;
-    }
-    cont_data = cont_var ? -1 : 1;
+weather_data.prototype.display_top_city = function () {
+  this.count_num = document.getElementById("top_cities_num").value;
+  if (this.weather_string == "sunny") {
+    this.onclick_func1();
   }
-  console.log(temp_data, "temp");
-  console.log(cont_data, "cons");
+  if (this.weather_string == "winter") {
+    this.onclick_func2();
+  }
+  if (this.weather_string == "rainy") {
+    this.onclick_func3();
+  }
+};
+
+//function for scroll left button
+weather_data.prototype.move_left = function () {
+  document.querySelector(".grid_items_1").scrollBy(365, 0);
+};
+
+//function for scroll right button
+weather_data.prototype.move_right = function () {
+  document.querySelector(".grid_items_1").scrollBy(-365, 0);
+};
+
+//function to display top 12 cities in bottom section
+weather_data.prototype.Print_12_cities = function (item) {
+  if (item == "temperature") {
+    this.temp_var = !this.temp_var;
+    if (this.temp_var) {
+      document.getElementById(
+        "temp_arrow"
+      ).src = `/General_Images_&_Icons/arrowup.svg`;
+    } else {
+      document.getElementById(
+        "temp_arrow"
+      ).src = `/General_Images_&_Icons/arrowdown.svg`;
+    }
+    this.temp_data = this.temp_var ? -1 : 1;
+  } else {
+    this.cont_var = !this.cont_var;
+    if (this.cont_var) {
+      document.getElementById(
+        "con_arrow"
+      ).src = `/General_Images_&_Icons/arrowup.svg`;
+    } else {
+      document.getElementById(
+        "con_arrow"
+      ).src = `/General_Images_&_Icons/arrowdown.svg`;
+    }
+    this.cont_data = this.cont_var ? -1 : 1;
+  }
   var print_first_12_cities = ``;
-  var keys = Object.keys(weatherdata);
-  var time_Zone_city = [];
-  for (var i = 0; i < keys.length; i++) {
-    time_Zone_city.push([
-      keys[i],
-      weatherdata[keys[i]].timeZone.split("/")[0],
-      weatherdata[keys[i]].temperature,
+  for (var i = 0; i < this.keys.length; i++) {
+    this.time_Zone_city.push([
+      this.keys[i],
+      this.weatherdata[this.keys[i]].timeZone.split("/")[0],
+      this.weatherdata[this.keys[i]].temperature,
     ]);
   }
 
-  time_Zone_city = time_Zone_city.sort(
+  this.time_Zone_city = this.time_Zone_city.sort(
     (a, b) =>
-      cont_data * a[1].localeCompare(b[1]) ||
-      temp_data * (parseInt(a[2]) - parseInt(b[2]))
+      this.cont_data * a[1].localeCompare(b[1]) ||
+      this.temp_data * (parseInt(a[2]) - parseInt(b[2]))
   );
-  // time_Zone_city = time_Zone_city.sort((a, b) => {
-  //   if (a[1] < b[1]) {
-  //       return -1;
-  //   }
-  //   if (a[1] > b[1]) {
-  //       return 1;
-  //   }
-  //   return 0;
-  // });
-  // console.log(time_Zone_city)
-  // if(item === "temperature"){
-  //   time_Zone_city = time_Zone_city.sort(
-  //     (a, b) =>
-  //       a[2] - b[2]
-  //   );
-  // }
-  // console.log(time_Zone_city)
   for (var i = 0; i < 12; i++) {
     var current_time = new Date().toLocaleString("en-US", {
-      timeZone: weatherdata[time_Zone_city[i][0]].timeZone,
+      timeZone: this.weatherdata[this.time_Zone_city[i][0]].timeZone,
       timeStyle: "medium",
       hourCycle: "h12",
     });
     print_first_12_cities += `<div class="box1-ingrid">
-      <div id="box1-ingrid_c1">
-        <p id="p_1">${time_Zone_city[i][1]}</p>
-        <p id="p_2">${time_Zone_city[i][0]}, ${current_time}</p>
-      </div>
-      <div id="box1-ingrid_c2">
-        <p id="p2_1">${weatherdata[time_Zone_city[i][0]].temperature}</p>
-        <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />${
-          weatherdata[time_Zone_city[i][0]].humidity
-        }</p>
-      </div>
-    </div>`;
+        <div id="box1-ingrid_c1">
+          <p id="p_1">${this.time_Zone_city[i][1]}</p>
+          <p id="p_2">${this.time_Zone_city[i][0]}, ${current_time}</p>
+        </div>
+        <div id="box1-ingrid_c2">
+          <p id="p2_1">${
+            this.weatherdata[this.time_Zone_city[i][0]].temperature
+          }</p>
+          <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />${
+            this.weatherdata[this.time_Zone_city[i][0]].humidity
+          }</p>
+        </div>
+      </div>`;
   }
   document.querySelector(".grid_boxes_1").innerHTML = print_first_12_cities;
 }
