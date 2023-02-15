@@ -354,6 +354,7 @@ class weather_data {
   }
   //function to display top 12 cities in bottom section
   Print_12_cities(item) {
+    this.time_Zone_city = [];
     if (item == "temperature") {
       this.temp_var = !this.temp_var;
       if (this.temp_var) {
