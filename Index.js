@@ -382,6 +382,7 @@ weather_data.prototype.move_right = function () {
 
 //function to display top 12 cities in bottom section
 weather_data.prototype.Print_12_cities = function (item) {
+  this.time_Zone_city = [];
   if (item == "temperature") {
     this.temp_var = !this.temp_var;
     if (this.temp_var) {
