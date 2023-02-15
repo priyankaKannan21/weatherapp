@@ -527,6 +527,7 @@ class weather_data {
       </div>`;
     }
     document.querySelector(".grid_boxes_1").innerHTML = print_first_12_cities;
+    console.log(this.time_Zone_city);
   }
 }
 
