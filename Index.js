@@ -353,6 +353,7 @@ class weather_data {
   }
   //function to display top 12 cities in bottom section
   Print_12_cities(item) {
+    this.time_Zone_city = [];
     if (item == "temperature") {
       this.temp_var = !this.temp_var;
       if (this.temp_var) {
@@ -407,8 +408,10 @@ class weather_data {
           <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />${this.weatherdata[this.time_Zone_city[i][0]].humidity}</p>
         </div>
       </div>`;
+    }
+    document.querySelector(".grid_boxes_1").innerHTML = print_first_12_cities;
+    console.log(this.time_Zone_city);
   }
-  document.querySelector(".grid_boxes_1").innerHTML = print_first_12_cities;
 }
 
 
