@@ -14,8 +14,8 @@ fetch('/files/data.json')
 function weatherdatas(){   
     var keys=Object.keys(weatherdata);
     var option=``;
-    for(var i=0;i<keys.length;i++){
-        option += `<option value=${keys[i]}></option>`;
+    for(var index=0;index<keys.length;index++){
+        option += `<option value=${keys[index]}></option>`;
     }
     console.log(option);
     document.querySelector("#city_name").innerHTML = option;
@@ -68,7 +68,7 @@ function change_data(){
     var arr_temperature=``;
     var arr_weather=``;
     arr_nextfivehours=``;
-    for(var i=0;i<6;i++){
+    for(var index=0;index<6;index++){
         arr_temperature += `<span><p id="weather_next1">Nil</p></span>`;
         arr_weather += `<span><img id="weather_icon1" src="/General_Images_&_Icons/none.png" /></span><span></span>`;
         arr_nextfivehours += `<span><p id="now">Nil</p></span><span></span>`;
@@ -110,8 +110,8 @@ function next_five_temperature(city){
     arr1 = arr1.concat(arr);
     arr1.push(arr1[1]);
     var arr_temperature=``;
-    for(var i=0;i<arr1.length;i++){
-        arr_temperature += (`<span><p id="weather_next1">${arr1[i]}</p></span>`);
+    for(var index=0;index<arr1.length;index++){
+        arr_temperature += (`<span><p id="weather_next1">${arr1[index]}</p></span>`);
     }
     document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
 }
@@ -121,21 +121,21 @@ function next_five_hour(current_time){
     var arr_nextfivehours=``;
     var hour = parseInt(current_time.slice(0,2));
     arr_nextfivehours += (`<span><p id="now">Now</p></span><span></span>`);
-    for(var i=0; i<5 ;i++){
+    for(var index=0; index<5 ;index++){
         if(current_time.split(' ')[1] == 'PM'){
-            if(hour+1+i >12){
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}PM</p></span><span></span>`);
+            if(hour+1+index >12){
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1-12}PM</p></span><span></span>`);
             }
             else{
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1}PM</p></span><span></span>`);
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1}PM</p></span><span></span>`);
             }
         }
         else{
-            if(hour+1+i >12){
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}AM</p></span><span></span>`);
+            if(hour+1+index >12){
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1-12}AM</p></span><span></span>`);
             }
             else{
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1}AM</p></span><span></span>`);
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1}AM</p></span><span></span>`);
             }        
         }
     }
@@ -150,8 +150,8 @@ function weather_icon(city){
     arr1 = arr1.concat(arr);
     arr1.push(arr1[1])
     var arr_weather=``;
-    for(var i=0;i<arr1.length;i++){
-        var temp=arr1[i].split('°')[0];
+    for(var index=0;index<arr1.length;index++){
+        var temp=arr1[index].split('°')[0];
         // var st= "weather_icon"+ (i+1);
         if(parseInt(temp)>29){
             arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/sunnyIcon.svg" /></span
