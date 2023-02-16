@@ -1,14 +1,19 @@
-// fetch data from json file
-fetch("/files/data.json")
+// fetch data from API link
+fetch("https://soliton.glitch.me/all-timezone-cities")
   .then((data) => data.json())
   .then((result) => {
-    let data_object = new weather_data(result);
-    console.log(result);
+    let jsonData ={};
+    for (const e of result) {
+      jsonData[e.cityName]=e;
+    }
+    let data_object = new weather_data(jsonData);
     data_object.weatherdatas();
     data_object.weather();
     data_object.select_cities_based_on_weather();
     data_object.onclick_func1();
     data_object.Print_12_cities("continent");
+    
+    setInterval(data_object.time_formart.bind(data_object,data_object.selected_city), 1000);
   });
 
 //function which contains all global variables can be accessed by using this keyword
@@ -25,7 +30,7 @@ class weather_data {
     this.temp_var = false;
     this.temp_data, this.cont_data;
     this.time_Zone_city = [];
-    setInterval(this.weather.bind(this), 1000);
+    this.selected_city="Anadyr";
   }
   //function for display content in drop box
   weatherdatas() {
@@ -64,8 +69,8 @@ class weather_data {
   }
   //function for display waether content based on city
   weather() {
-    let selected_city = document.getElementById("city").value;
-    if (!this.keys.includes(selected_city)) {
+    this.selected_city = document.getElementById("city").value;
+    if (!this.keys.includes(this.selected_city)) {
       document.querySelector("#temp_c").innerHTML = "Nil";
       document.querySelector("#humidity").innerHTML = "Nil";
       document.querySelector("#faren_f").innerHTML = "Nil";
@@ -80,13 +85,13 @@ class weather_data {
       document.getElementById("am_pm_state").style.visibility = "visible";
       document.getElementById("city").style.backgroundColor =
         "rgba(0, 0, 0, 0.5)";
-      let temperature = this.weatherdata[selected_city].temperature;
-      let humidity = this.weatherdata[selected_city].humidity;
+      let temperature = this.weatherdata[this.selected_city].temperature;
+      let humidity = this.weatherdata[this.selected_city].humidity;
       let farenheit = Math.round(
-        parseInt(this.weatherdata[selected_city].temperature) * (9 / 5) + 32
+        parseInt(this.weatherdata[this.selected_city].temperature) * (9 / 5) + 32
       );
-      let precipitation = this.weatherdata[selected_city].precipitation;
-      let date_time = this.weatherdata[selected_city].dateAndTime;
+      let precipitation = this.weatherdata[this.selected_city].precipitation;
+      let date_time = this.weatherdata[this.selected_city].dateAndTime;
       let date_time_array = date_time.split(", ");
       let date = date_time_array[0];
       let new_date = this.date_format(date);
@@ -98,17 +103,17 @@ class weather_data {
       document.querySelector("#date").innerHTML = new_date;
       document.querySelector(
         "#city_icon"
-      ).src = `/Icons_for_cities/${selected_city}.svg`;
-      this.weather_icon(selected_city);
-      this.time_formart(selected_city);
-      this.next_five_temperature(selected_city);
+      ).src = `/Icons_for_cities/${this.selected_city}.svg`;
+      this.weather_icon(this.selected_city);
+      this.time_formart();
+      this.next_five_temperature(this.selected_city);
     }
   }
   //fucntion to change null values when city is not selected
   change_data() {
     let arr_temperature = ``;
     let arr_weather = ``;
-    arr_nextfivehours = ``;
+    let arr_nextfivehours = ``;
     for (let i = 0; i < 6; i++) {
       arr_temperature += `<span><p id="weather_next1">Nil</p></span>`;
       arr_weather += `<span><img id="weather_icon1" src="/General_Images_&_Icons/none.png" /></span><span></span>`;
@@ -116,12 +121,12 @@ class weather_data {
     }
     document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
     document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
-    document.getElementById("grid-item-3_row1_list1").innerHTML =
-      arr_nextfivehours;
+    document.getElementById("grid-item-3_row1_list1").innerHTML = arr_nextfivehours;
     document.getElementById("city").style.backgroundColor = "#c94c4c";
   }
   //function to format time
-  time_formart(city) {
+  time_formart() {
+    var city = this.selected_city;
     let current_time = new Date().toLocaleString("en-US", {
       timeZone: this.weatherdata[city].timeZone,
       timeStyle: "medium",
@@ -155,11 +160,21 @@ class weather_data {
     return new_date;
   }
   //function to display next five hours temperature
-  next_five_temperature(city) {
-    let arr1 = [];
-    arr1.push(this.weatherdata[city].temperature);
-    let arr = this.weatherdata[city].nextFiveHrs;
-    arr1 = arr1.concat(arr);
+  async next_five_temperature(city) {
+    let value = await fetch(`https://soliton.glitch.me?city=${city}`)
+    .then(data => data.json())
+    let nxt = await fetch('https://soliton.glitch.me/hourly-forecast',{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json",
+      },
+      body:JSON.stringify({
+        ...value,
+        "hours":5
+      })
+    })
+    .then(data => data.json())
+    let arr1 = nxt.temperature;
     arr1.push(arr1[1]);
     let arr_temperature = ``;
     for (let i = 0; i < arr1.length; i++) {
@@ -191,11 +206,21 @@ class weather_data {
       arr_nextfivehours;
   }
   //function to change weather icons based on temperature
-  weather_icon(city) {
-    let arr1 = [];
-    arr1.push(this.weatherdata[city].temperature);
-    let arr = this.weatherdata[city].nextFiveHrs;
-    arr1 = arr1.concat(arr);
+  async weather_icon(city) {
+    let value = await fetch(`https://soliton.glitch.me?city=${city}`)
+    .then(data => data.json())
+    let nxt = await fetch('https://soliton.glitch.me/hourly-forecast',{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json",
+      },
+      body:JSON.stringify({
+        ...value,
+        "hours":5
+      })
+    })
+    .then(data => data.json())
+    let arr1 = nxt.temperature;
     arr1.push(arr1[1]);
     let arr_weather = ``;
     for (let i = 0; i < arr1.length; i++) {
@@ -410,7 +435,6 @@ class weather_data {
       </div>`;
     }
     document.querySelector(".grid_boxes_1").innerHTML = print_first_12_cities;
-    console.log(this.time_Zone_city);
   }
 }
 
