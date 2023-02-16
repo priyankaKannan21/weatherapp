@@ -12,7 +12,7 @@ fetch("https://soliton.glitch.me/all-timezone-cities")
     data_object.select_cities_based_on_weather();
     data_object.onclick_func1();
     data_object.Print_12_cities("continent");
-    
+    console.log(data_object)
     setInterval(data_object.time_formart.bind(data_object,data_object.selected_city), 1000);
   });
 
@@ -323,6 +323,13 @@ class weather_data {
         timeStyle: "medium",
         hourCycle: "h12",
       });
+      current_time = current_time.split(" ")[0].split(':');
+      let morn_even = parseInt(current_time.slice(0, 2)) >= 12 ? "PM" : "AM";
+      let date_time = this.weatherdata[weather_city[i]].dateAndTime;
+      let date_time_array = date_time.split(", ");
+      let date = date_time_array[0];
+      let new_date = this.date_format(date);
+  
       city_based_on_weather += `<div class="grid_boxes">
           <div id="city"><p>${weather_city[i]}</p></div>
           <div class="weather">
@@ -331,8 +338,8 @@ class weather_data {
           </div>
           <div class="weather_items">
             <div class="weather_items_child1">
-              <p id="time_city">${current_time.split(" ")[0]}</p>
-              <p id="date_city">${this.weatherdata[weather_city[i]].dateAndTime.split(",")[0]}</p>
+              <p id="time_city">${ current_time[0]+":"+current_time[1]+ " " + morn_even}</p>
+              <p id="date_city">${new_date}</p>
             </div>
             <div class="weather_items_child">
               <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
@@ -423,10 +430,12 @@ class weather_data {
         timeStyle: "medium",
         hourCycle: "h12",
       });
+      current_time = current_time.split(" ")[0].split(':');
+      let morn_even = parseInt(current_time.slice(0, 2)) >= 12 ? "PM" : "AM";
       print_first_12_cities += `<div class="box1-ingrid">
         <div id="box1-ingrid_c1">
           <p id="p_1">${this.time_Zone_city[i][1]}</p>
-          <p id="p_2">${this.time_Zone_city[i][0]}, ${current_time}</p>
+          <p id="p_2">${this.time_Zone_city[i][0]}, ${current_time[0] + ":" +current_time[1] + " " + morn_even}</p>
         </div>
         <div id="box1-ingrid_c2">
           <p id="p2_1">${this.weatherdata[this.time_Zone_city[i][0]].temperature}</p>
