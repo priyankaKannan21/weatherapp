@@ -16,6 +16,10 @@ fetch("https://soliton.glitch.me/all-timezone-cities")
     setInterval(data_object.time_formart.bind(data_object,data_object.selected_city), 1000);
   });
 
+  window.setTimeout(function () {
+      window.location.reload();
+  }, 60000);
+
 /**
  * @description class that has a constructur function and methods
  * @class weather_data
@@ -201,8 +205,8 @@ class weather_data {
         "hours":5
       })
     })
-    .then(data => data.json())
-    let arr1 = nxt.temperature;
+    let arr =await nxt.json()
+    let arr1 = arr.temperature;
     arr1.push(arr1[1]);
     let arr_temperature = ``;
     for (let i = 0; i < arr1.length; i++) {
@@ -257,8 +261,8 @@ class weather_data {
         "hours":5
       })
     })
-    .then(data => data.json())
-    let arr1 = nxt.temperature;
+    let arr =await nxt.json()
+     let arr1 = arr.temperature;
     arr1.push(arr1[1]);
     let arr_weather = ``;
     for (let i = 0; i < arr1.length; i++) {
