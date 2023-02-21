@@ -22,7 +22,7 @@ fetch("http://localhost:5000/allweatherdata")
   });
 
   // window.setTimeout(function () {
-  //   Â  window.location.reload();
+  //     window.location.reload();
   // }, 60000);
 /**
  * @description class that has a constructur function and methods
@@ -540,5 +540,22 @@ class weather_data {
     console.log(this.time_Zone_city);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
