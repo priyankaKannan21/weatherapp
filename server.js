@@ -1,6 +1,7 @@
-const http = require("http");
+var express = require("express");
+var app = express();
+app.use(express.static('./public'));
 const path = require("path");
-const fs = require("fs");
 
 const {
   allTimeZones,
@@ -70,7 +71,7 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(5000, (err) => {
+app.listen(5000, (err) => {
   if (err) {
     console.log(err);
   } else {
