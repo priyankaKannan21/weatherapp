@@ -10,16 +10,15 @@ const {
 } = require("./timeZone");
 
 app.get("/allweatherdata", (req,res) => {
-  res.send(JSON.stringify(allTimeZones()));
+  res.send(allTimeZones());
 })
 app.get("/citydata/:id", (req,res) => {
   let city_name = req.params.id;
-  res.send(JSON.stringify(timeForOneCity(city_name)));
+  res.send(timeForOneCity(city_name));
 });
 app.post("/next5hrs", (req,res) => {
   var city_data = req.body;
-  console.log(city_data);
-  res.send(JSON.stringify(nextNhoursWeather(city_data.city_Date_Time_Name,city_data.hours,allTimeZones())));
+  res.send(nextNhoursWeather(city_data.city_Date_Time_Name,city_data.hours,allTimeZones()));
 });
 
 app.listen(5000, (err) => {

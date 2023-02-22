@@ -8,7 +8,7 @@ fetch("http://localhost:5000/allweatherdata")
   .then((result) => {
     let jsonData ={};
     for (const e of result) {
-      jsonData[e.cityName]=e;
+      jsonData[e.cityName.toLowerCase()]=e;
     }
     console.log(jsonData);
     let data_object = new weather_data(jsonData);
@@ -41,7 +41,7 @@ class weather_data {
     this.temp_var = false;
     this.temp_data, this.cont_data;
     this.time_Zone_city = [];
-    this.selected_city="Anadyr";
+    this.selected_city="anadyr";
   }
 
   /**
@@ -51,7 +51,7 @@ class weather_data {
   weatherdatas() {
     let option = ``;
     for (let i = 0; i < this.keys.length; i++) {
-      option += `<option value=${this.keys[i]}></option>`;
+      option += `<option value=${this.keys[i].charAt(0).toUpperCase() + this.keys[i].slice(1)}></option>`;
     }
     document.querySelector("#city_name").innerHTML = option;
     document
@@ -88,8 +88,12 @@ class weather_data {
    * @memberof weather_data
    */
   weather() {
-    this.selected_city = document.getElementById("city").value;
-    if (!this.keys.includes(this.selected_city)) {
+    this.selected_city = document.getElementById("city").value.toLowerCase();
+    let keys_cities = this.keys;
+    for(let index=0;index<keys_cities.length;index++){
+      keys_cities[index] = keys_cities[index].toLowerCase();
+    }
+    if (!keys_cities.includes(this.selected_city.toLowerCase())) {
       document.querySelector("#temp_c").innerHTML = "Nil";
       document.querySelector("#humidity").innerHTML = "Nil";
       document.querySelector("#faren_f").innerHTML = "Nil";
@@ -197,7 +201,7 @@ class weather_data {
    * @memberof weather_data
    */
   async next_five_temperature(city) {
-    let value = await fetch(`http://localhost:5000/citydata/${city}`)
+    let value = await fetch(`http://localhost:5000/citydata/${city.charAt(0).toUpperCase()+city.slice(1)}`)
     .then(data => data.json())
     let nxt = await fetch('http://localhost:5000/next5hrs',{
       method:"POST",
@@ -255,7 +259,7 @@ class weather_data {
    * @memberof weather_data
    */
   async weather_icon(city) {
-    let value = await fetch(`http://localhost:5000/citydata/${city}`)
+    let value = await fetch(`http://localhost:5000/citydata/${city.charAt(0).toUpperCase()+city.slice(1)}`)
     .then(data => data.json())
     let nxt = await fetch('http://localhost:5000/next5hrs',{
       method:"POST",
@@ -405,9 +409,9 @@ class weather_data {
       let date_time_array = date_time.split(", ");
       let date = date_time_array[0];
       let new_date = this.date_format(date);
-  
+      let city_Name = weather_city[i].charAt(0).toUpperCase()+weather_city[i].slice(1);
       city_based_on_weather += `<div class="grid_boxes">
-          <div id="city"><p>${weather_city[i]}</p></div>
+          <div id="city"><p>${city_Name}</p></div>
           <div class="weather">
             <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
             <p>${this.weatherdata[weather_city[i]].temperature}</p>
@@ -525,10 +529,11 @@ class weather_data {
       });
       current_time = current_time.split(" ")[0].split(':');
       let morn_even = parseInt(current_time.slice(0, 2)) >= 12 ? "PM" : "AM";
+      let city_Name = this.time_Zone_city[i][0].charAt(0).toUpperCase()+this.time_Zone_city[i][0].slice(1);
       print_first_12_cities += `<div class="box1-ingrid">
         <div id="box1-ingrid_c1">
           <p id="p_1">${this.time_Zone_city[i][1]}</p>
-          <p id="p_2">${this.time_Zone_city[i][0]}, ${current_time[0] + ":" +current_time[1] + " " + morn_even}</p>
+          <p id="p_2">${city_Name}, ${current_time[0] + ":" +current_time[1] + " " + morn_even}</p>
         </div>
         <div id="box1-ingrid_c2">
           <p id="p2_1">${this.weatherdata[this.time_Zone_city[i][0]].temperature}</p>
