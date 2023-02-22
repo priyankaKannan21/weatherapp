@@ -766,9 +766,9 @@ class weather_data {
       let date_time_array = date_time.split(", ");
       let date = date_time_array[0];
       let new_date = this.date_format(date);
-  
+      let city_Name = weather_city[i].charAt(0).toUpperCase()+weather_city[i].slice(1);
       city_based_on_weather += `<div class="grid_boxes">
-          <div id="city"><p>${weather_city[i]}</p></div>
+          <div id="city"><p>${city_Name}</p></div>
           <div class="weather">
             <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
             <p>${this.weatherdata[weather_city[i]].temperature}</p>
@@ -964,10 +964,11 @@ class weather_data {
       });
       current_time = current_time.split(" ")[0].split(':');
       let morn_even = parseInt(current_time.slice(0, 2)) >= 12 ? "PM" : "AM";
+      let city_Name = this.time_Zone_city[i][0].charAt(0).toUpperCase()+this.time_Zone_city[i][0].slice(1);
       print_first_12_cities += `<div class="box1-ingrid">
         <div id="box1-ingrid_c1">
           <p id="p_1">${this.time_Zone_city[i][1]}</p>
-          <p id="p_2">${this.time_Zone_city[i][0]}, ${current_time[0] + ":" +current_time[1] + " " + morn_even}</p>
+          <p id="p_2">${city_Name}, ${current_time[0] + ":" +current_time[1] + " " + morn_even}</p>
         </div>
         <div id="box1-ingrid_c2">
           <p id="p2_1">${this.weatherdata[this.time_Zone_city[i][0]].temperature}</p>
