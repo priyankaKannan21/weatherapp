@@ -56,7 +56,7 @@ class weather_data {
     document.querySelector("#city_name").innerHTML = option;
     document
       .getElementById("city")
-      .addEventListener("input", this.weather.bind(this));
+      .addEventListener("change", this.weather.bind(this));
     document
       .getElementById("sunny")
       .addEventListener("click", this.onclick_func1.bind(this));
