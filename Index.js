@@ -16,8 +16,8 @@ fetch('/files/data.json')
 function weatherdatas(){   
     var keys=Object.keys(weatherdata);
     var option=``;
-    for(var i=0;i<keys.length;i++){
-        option += `<option value=${keys[i]}></option>`;
+    for(var index=0;index<keys.length;index++){
+        option += `<option value=${keys[index]}></option>`;
     }
     document.querySelector("#city_name").innerHTML = option;
 }
@@ -111,8 +111,8 @@ function next_five_temperature(city){
     arr1 = arr1.concat(arr);
     arr1.push(arr1[1]);
     var arr_temperature=``;
-    for(var i=0;i<arr1.length;i++){
-        arr_temperature += (`<span><p id="weather_next1">${arr1[i]}</p></span>`);
+    for(var index=0;index<arr1.length;index++){
+        arr_temperature += (`<span><p id="weather_next1">${arr1[index]}</p></span>`);
     }
     document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
 }
@@ -122,21 +122,21 @@ function next_five_hour(current_time){
     var arr_nextfivehours=``;
     var hour = parseInt(current_time.slice(0,2));
     arr_nextfivehours += (`<span><p id="now">Now</p></span><span></span>`);
-    for(var i=0; i<5 ;i++){
+    for(var index=0; index<5 ;index++){
         if(current_time.split(' ')[1] == 'PM'){
-            if(hour+1+i >12){
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}PM</p></span><span></span>`);
+            if(hour+1+index >12){
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1-12}PM</p></span><span></span>`);
             }
             else{
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1}PM</p></span><span></span>`);
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1}PM</p></span><span></span>`);
             }
         }
         else{
-            if(hour+1+i >12){
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1-12}AM</p></span><span></span>`);
+            if(hour+1+index >12){
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1-12}AM</p></span><span></span>`);
             }
             else{
-                arr_nextfivehours += (`<span><p id="now">${hour+i+1}AM</p></span><span></span>`);
+                arr_nextfivehours += (`<span><p id="now">${hour+index+1}AM</p></span><span></span>`);
             }        
         }
     }
@@ -151,8 +151,8 @@ function weather_icon(city){
     arr1 = arr1.concat(arr);
     arr1.push(arr1[1])
     var arr_weather=``;
-    for(var i=0;i<arr1.length;i++){
-        var temp=arr1[i].split('°')[0];
+    for(var index=0;index<arr1.length;index++){
+        var temp=arr1[index].split('°')[0];
         // var st= "weather_icon"+ (i+1);
         if(parseInt(temp)>29){
             arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/sunnyIcon.svg" /></span
@@ -215,8 +215,8 @@ function sort_func(cities_data){
     city_temp.sort(function(a, b){return a-b});
     console.log(city_temp);
     var city_name = [];
-    for(var i=0;i<city_temp.length;i++){
-        var cityname = Object.keys(cities_data).find(key => cities_data_1[key] === city_temp[i])
+    for(var index=0;index<city_temp.length;index++){
+        var cityname = Object.keys(cities_data).find(key => cities_data_1[key] === city_temp[index])
         city_name.push(cityname);
         delete cities_data_1[cityname];
     }
@@ -232,18 +232,18 @@ var rainy_cities={};
 //function to seperate cities based on weather
 function select_cities_based_on_weather(){
     var keys = Object.keys(weatherdata);
-    for(var i=0;i<keys.length;i++){
-        var t = parseInt(weatherdata[keys[i]].temperature);
-        var h = parseInt(weatherdata[keys[i]].humidity);
-        var p = parseInt(weatherdata[keys[i]].precipitation);
+    for(var index=0;index<keys.length;index++){
+        var t = parseInt(weatherdata[keys[index]].temperature);
+        var h = parseInt(weatherdata[keys[index]].humidity);
+        var p = parseInt(weatherdata[keys[index]].precipitation);
         if((t > 29) && (h < 50) && (p >= 50)){
-            sunny_cities[keys[i]] =t;
+            sunny_cities[keys[index]] =t;
         }
         if((t >= 20 && t <= 28) && (h > 50) && (p <50)){
-            winter_cities[keys[i]] = h;
+            winter_cities[keys[index]] = h;
         }
         if((t < 20) && (h >= 50)){
-            rainy_cities[keys[i]] = p;
+            rainy_cities[keys[index]] = p;
         }
     }
 }
@@ -255,35 +255,35 @@ function city_based_weather_cardview(weather_city,icon_weather){
     // if(count_num>weather_city.length)
     //     count_num=weather_city.length;
     console.log(count_num);
-    for(var i=0;i<Math.min(count_num, weather_city.length) ;i++)
+    for(var index=0;index<Math.min(count_num, weather_city.length) ;index++)
     {
-        var timezone = weatherdata[weather_city[i]].timeZone;
+        var timezone = weatherdata[weather_city[index]].timeZone;
         var current_time= new Date().toLocaleString("en-US",{
             timeZone: timezone,
             timeStyle: "medium",
             hourCycle: "h12",
         });
         city_based_on_weather +=  `<div class="grid_boxes">
-        <div id="city"><p>${weather_city[i]}</p></div>
+        <div id="city"><p>${weather_city[index]}</p></div>
         <div class="weather">
           <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
-          <p>${weatherdata[weather_city[i]].temperature}</p>
+          <p>${weatherdata[weather_city[index]].temperature}</p>
         </div>
         <div class="weather_items">
           <div class="weather_items_child1">
             <p id="time_city">${current_time.split(' ')[0]}</p>
-            <p id="date_city">${(weatherdata[weather_city[i]].dateAndTime).split(',')[0]}</p>
+            <p id="date_city">${(weatherdata[weather_city[index]].dateAndTime).split(',')[0]}</p>
           </div>
           <div class="weather_items_child">
             <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
-            <p id="city_humidity">${weatherdata[weather_city[i]].humidity}</p>
+            <p id="city_humidity">${weatherdata[weather_city[index]].humidity}</p>
           </div>
           <div class="weather_items_child">
             <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
-            <p id="city_precipitation">${weatherdata[weather_city[i]].precipitation}</p>
+            <p id="city_precipitation">${weatherdata[weather_city[index]].precipitation}</p>
           </div>
         </div>
-        <div class="city_img"><img src="/Icons_for_cities/${weather_city[i]}.svg"></div>
+        <div class="city_img"><img src="/Icons_for_cities/${weather_city[index]}.svg"></div>
       </div>`
     }
     document.querySelector(".grid_items_1").innerHTML = city_based_on_weather;
@@ -311,10 +311,10 @@ var count_num;
 //display top cities function for middle section
 function display_top_city(){
     count_num = document.getElementById("top_cities_num").value;
-    if(weather_string == "sunny")
+    if(weather_string === "sunny")
         onclick_func1();
-    if(weather_string == "winter")
+    if(weather_string === "winter")
         onclick_func2();
-    if(weather_string == "rainy")
+    if(weather_string === "rainy")
         onclick_func3();
 }
