@@ -109,7 +109,7 @@ class weather_data {
   change_data() {
     let arr_temperature = ``;
     let arr_weather = ``;
-    arr_nextfivehours = ``;
+    let arr_nextfivehours = ``;
     for (let index = 0; index < 6; index++) {
       arr_temperature += `<span><p id="weather_next1">Nil</p></span>`;
       arr_weather += `<span><img id="weather_icon1" src="/General_Images_&_Icons/none.png" /></span><span></span>`;
