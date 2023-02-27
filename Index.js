@@ -2,21 +2,38 @@
 fetch("/files/data.json")
   .then((data) => data.json())
   .then((result) => {
-    weatherdata = result;
+    let data_object = new weather_data(result);
     console.log(result);
-    weatherdatas();
-    weather_icon("Anadyr");
-    time_formart("Anadyr");
-    select_cities_based_on_weather();
-    onclick_func1();
-    Print_12_cities("continent");
+    data_object.weatherdatas();
+    data_object.weather();
+    data_object.select_cities_based_on_weather();
+    data_object.onclick_func1();
+    data_object.Print_12_cities("continent");
+
   });
+
+  //function which contains all global variables can be accessed by using this keyword
+  function weather_data(data) {
+    this.weatherdata = data;
+    this.keys = Object.keys(this.weatherdata);
+    this.weather_string;
+    this.sunny_cities = {};
+    this.winter_cities = {};
+    this.rainy_cities = {};
+    this.count_num = 3;
+    this.cont_var = false;
+    this.temp_var = false;
+    this.temp_data, this.cont_data;
+    this.time_Zone_city = [];
+    setInterval(this.weather.bind(this), 1000);
+  }
+  
 
 //function for display content in drop box
 weather_data.prototype.weatherdatas = function () {
   let option = ``;
-  for (let i = 0; i < this.keys.length; i++) {
-    option += `<option value=${this.keys[i]}></option>`;
+  for (let index = 0; index < this.keys.length; index++) {
+    option += `<option value=${this.keys[index]}></option>`;
   }
   document.querySelector("#city_name").innerHTML = option;
   document
@@ -47,14 +64,6 @@ weather_data.prototype.weatherdatas = function () {
     .getElementById("print_based_temperature")
     .addEventListener("click", this.Print_12_cities.bind(this, "temperature"));
 };
-function weatherdatas(){   
-    var keys=Object.keys(weatherdata);
-    var option=``;
-    for(var index=0;index<keys.length;index++){
-        option += `<option value=${keys[index]}></option>`;
-    }
-    document.querySelector("#city_name").innerHTML = option;
-}
 
 //function for display waether content based on city
 weather_data.prototype.weather = function () {
@@ -104,7 +113,7 @@ weather_data.prototype.change_data = function () {
   let arr_temperature = ``;
   let arr_weather = ``;
   arr_nextfivehours = ``;
-  for (let i = 0; i < 6; i++) {
+  for (let index = 0; index < 6; index++) {
     arr_temperature += `<span><p id="weather_next1">Nil</p></span>`;
     arr_weather += `<span><img id="weather_icon1" src="/General_Images_&_Icons/none.png" /></span><span></span>`;
     arr_nextfivehours += `<span><p id="now">Nil</p></span><span></span>`;
@@ -161,8 +170,8 @@ weather_data.prototype.next_five_temperature = function (city) {
   arr1 = arr1.concat(arr);
   arr1.push(arr1[1]);
   let arr_temperature = ``;
-  for (let i = 0; i < arr1.length; i++) {
-    arr_temperature += `<span><p id="weather_next1">${arr1[i]}</p></span>`;
+  for (let index = 0; index < arr1.length; index++) {
+    arr_temperature += `<span><p id="weather_next1">${arr1[index]}</p></span>`;
   }
   document.getElementById("grid-item-3_row1_list4").innerHTML = arr_temperature;
 };
@@ -172,25 +181,25 @@ weather_data.prototype.next_five_hour = function (current_time) {
   let arr_nextfivehours = ``;
   let hour = parseInt(current_time.slice(0, 2));
   arr_nextfivehours += `<span><p id="now">Now</p></span><span></span>`;
-  for (let i = 0; i < 5; i++) {
+  for (let index = 0; index < 5; index++) {
     if (current_time.split(" ")[1] == "PM") {
-      if (hour + 1 + i > 12) {
+      if (hour + 1 + index > 12) {
         arr_nextfivehours += `<span><p id="now">${
-          hour + i + 1 - 12
+          hour + index + 1 - 12
         }PM</p></span><span></span>`;
       } else {
         arr_nextfivehours += `<span><p id="now">${
-          hour + i + 1
+          hour + index + 1
         }PM</p></span><span></span>`;
       }
     } else {
-      if (hour + 1 + i > 12) {
+      if (hour + 1 + index > 12) {
         arr_nextfivehours += `<span><p id="now">${
-          hour + i + 1 - 12
+          hour + index + 1 - 12
         }AM</p></span><span></span>`;
       } else {
         arr_nextfivehours += `<span><p id="now">${
-          hour + i + 1
+          hour + index + 1
         }AM</p></span><span></span>`;
       }
     }
@@ -207,8 +216,8 @@ weather_data.prototype.weather_icon = function (city) {
   arr1 = arr1.concat(arr);
   arr1.push(arr1[1]);
   let arr_weather = ``;
-  for (let i = 0; i < arr1.length; i++) {
-    let temp = arr1[i].split("°")[0];
+  for (let index = 0; index < arr1.length; index++) {
+    let temp = arr1[index].split("°")[0];
     if (parseInt(temp) > 29) {
       arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/sunnyIcon.svg" /></span
               ><span></span>`;
@@ -274,9 +283,9 @@ weather_data.prototype.sort_func = function (cities_data) {
     return a - b;
   });
   var city_name = [];
-  for (var i = 0; i < city_temp.length; i++) {
+  for (var index = 0; index < city_temp.length; index++) {
     var cityname = Object.keys(cities_data).find(
-      (key) => cities_data_1[key] === city_temp[i]
+      (key) => cities_data_1[key] === city_temp[index]
     );
     city_name.push(cityname);
     delete cities_data_1[cityname];
@@ -286,18 +295,18 @@ weather_data.prototype.sort_func = function (cities_data) {
 
 //function to seperate cities based on weather
 weather_data.prototype.select_cities_based_on_weather = function () {
-  for (var i = 0; i < this.keys.length; i++) {
-    var t = parseInt(this.weatherdata[this.keys[i]].temperature);
-    var h = parseInt(this.weatherdata[this.keys[i]].humidity);
-    var p = parseInt(this.weatherdata[this.keys[i]].precipitation);
+  for (var index = 0; index < this.keys.length; index++) {
+    var t = parseInt(this.weatherdata[this.keys[index]].temperature);
+    var h = parseInt(this.weatherdata[this.keys[index]].humidity);
+    var p = parseInt(this.weatherdata[this.keys[index]].precipitation);
     if (t > 29 && h < 50 && p >= 50) {
-      this.sunny_cities[this.keys[i]] = t;
+      this.sunny_cities[this.keys[index]] = t;
     }
     if (t >= 20 && t <= 28 && h > 50 && p < 50) {
-      this.winter_cities[this.keys[i]] = h;
+      this.winter_cities[this.keys[index]] = h;
     }
     if (t < 20 && h >= 50) {
-      this.rainy_cities[this.keys[i]] = p;
+      this.rainy_cities[this.keys[index]] = p;
     }
   }
 };
@@ -309,40 +318,40 @@ weather_data.prototype.city_based_weather_cardview = function (
 ) {
   city_based_on_weather = ``;
   this.count_num = document.getElementById("top_cities_num").value;
-  for (var i = 0; i < Math.min(this.count_num, weather_city.length); i++) {
+  for (var index = 0; index < Math.min(this.count_num, weather_city.length); index++) {
     var current_time = new Date().toLocaleString("en-US", {
-      timeZone: this.weatherdata[weather_city[i]].timeZone,
+      timeZone: this.weatherdata[weather_city[index]].timeZone,
       timeStyle: "medium",
       hourCycle: "h12",
     });
     city_based_on_weather += `<div class="grid_boxes">
-          <div id="city"><p>${weather_city[i]}</p></div>
+          <div id="city"><p>${weather_city[index]}</p></div>
           <div class="weather">
             <img src="/Weather_Icons/${icon_weather}.svg" />&nbsp
-            <p>${this.weatherdata[weather_city[i]].temperature}</p>
+            <p>${this.weatherdata[weather_city[index]].temperature}</p>
           </div>
           <div class="weather_items">
             <div class="weather_items_child1">
               <p id="time_city">${current_time.split(" ")[0]}</p>
               <p id="date_city">${
-                this.weatherdata[weather_city[i]].dateAndTime.split(",")[0]
+                this.weatherdata[weather_city[index]].dateAndTime.split(",")[0]
               }</p>
             </div>
             <div class="weather_items_child">
               <img src="/Weather_Icons/humidityIcon.svg" />&nbsp
               <p id="city_humidity">${
-                this.weatherdata[weather_city[i]].humidity
+                this.weatherdata[weather_city[index]].humidity
               }</p>
             </div>
             <div class="weather_items_child">
               <img src="/Weather_Icons/precipitationIcon.svg" />&nbsp
               <p id="city_precipitation">${
-                this.weatherdata[weather_city[i]].precipitation
+                this.weatherdata[weather_city[index]].precipitation
               }</p>
             </div>
           </div>
           <div class="city_img"><img src="/Icons_for_cities/${
-            weather_city[i]
+            weather_city[index]
           }.svg"></div>
         </div>`;
   }
@@ -409,11 +418,11 @@ weather_data.prototype.Print_12_cities = function (item) {
     this.cont_data = this.cont_var ? -1 : 1;
   }
   var print_first_12_cities = ``;
-  for (var i = 0; i < this.keys.length; i++) {
+  for (var index = 0; index < this.keys.length; index++) {
     this.time_Zone_city.push([
-      this.keys[i],
-      this.weatherdata[this.keys[i]].timeZone.split("/")[0],
-      this.weatherdata[this.keys[i]].temperature,
+      this.keys[index],
+      this.weatherdata[this.keys[index]].timeZone.split("/")[0],
+      this.weatherdata[this.keys[index]].temperature,
     ]);
   }
 
@@ -422,23 +431,23 @@ weather_data.prototype.Print_12_cities = function (item) {
       this.cont_data * a[1].localeCompare(b[1]) ||
       this.temp_data * (parseInt(a[2]) - parseInt(b[2]))
   );
-  for (var i = 0; i < 12; i++) {
+  for (var index = 0; index < 12; index++) {
     var current_time = new Date().toLocaleString("en-US", {
-      timeZone: this.weatherdata[this.time_Zone_city[i][0]].timeZone,
+      timeZone: this.weatherdata[this.time_Zone_city[index][0]].timeZone,
       timeStyle: "medium",
       hourCycle: "h12",
     });
     print_first_12_cities += `<div class="box1-ingrid">
         <div id="box1-ingrid_c1">
-          <p id="p_1">${this.time_Zone_city[i][1]}</p>
-          <p id="p_2">${this.time_Zone_city[i][0]}, ${current_time}</p>
+          <p id="p_1">${this.time_Zone_city[index][1]}</p>
+          <p id="p_2">${this.time_Zone_city[index][0]}, ${current_time}</p>
         </div>
         <div id="box1-ingrid_c2">
           <p id="p2_1">${
-            this.weatherdata[this.time_Zone_city[i][0]].temperature
+            this.weatherdata[this.time_Zone_city[index][0]].temperature
           }</p>
           <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />${
-            this.weatherdata[this.time_Zone_city[i][0]].humidity
+            this.weatherdata[this.time_Zone_city[index][0]].humidity
           }</p>
         </div>
       </div>`;
