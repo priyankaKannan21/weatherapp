@@ -416,6 +416,7 @@ body {
 .grid_boxes_1 {
     column-gap: 50px;
     display: grid;
+    grid-auto-flow: column;
     grid-template-columns: 30% 30% 30%;
     grid-template-rows: 35% 35% 35% 35%;
     padding-left: 25px;

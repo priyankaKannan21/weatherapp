@@ -10,13 +10,16 @@
       <!-- top-left section of WeatherApp -->
       <div class="grid-item_grid-item-1">
         <div class="grid-item-1_grid1">
-          <img id ="city_icon" src="/Icons_for_cities/anadyr.svg" alt="" />
+          <img id="city_icon" src="/Icons_for_cities/anadyr.svg" alt="" />
         </div>
         <div class="grid-item-1_grid2">
-          <input list="city_name" id ="city" onchange="weather()" value="Anadyr">
-          <datalist id="city_name">
-
-          </datalist>
+          <input
+            list="city_name"
+            id="city"
+            onchange="weather()"
+            value="Anadyr"
+          />
+          <datalist id="city_name"> </datalist>
           <!-- <select name="city" class="city" onchange="weather()">
             <option value="select_city">---Select City---</option>
           </select> -->
@@ -24,8 +27,10 @@
         <div class="grid-item-1_grid3"></div>
         <div class="grid-item-1_grid4">
           <div class="time_div">
-          <p id="time">10:10:44</p>
-          <p id="img-time"><img id="am_pm_state" src="/General_Images_&_Icons/amState.svg" /></p>
+            <p id="time">10:10:44</p>
+            <p id="img-time">
+              <img id="am_pm_state" src="/General_Images_&_Icons/amState.svg" />
+            </p>
           </div>
           <p id="date" style="color: #fff"></p>
         </div>
@@ -79,20 +84,37 @@
           <p>Top cities around world</p>
         </div>
         <div class="grid_item2">
-          <img id="sunny" onclick="onclick_func1()" src="/Weather_Icons/sunnyIcon.svg" />
-          <img id="winter" onclick="onclick_func2()" src="/Weather_Icons/snowflakeIcon.svg" />
-          <img id="rainy" onclick="onclick_func3()" src="/Weather_Icons/rainyIcon.svg" />
+          <img
+            id="sunny"
+            onclick="onclick_func1()"
+            src="/Weather_Icons/sunnyIcon.svg"
+          />
+          <img
+            id="winter"
+            onclick="onclick_func2()"
+            src="/Weather_Icons/snowflakeIcon.svg"
+          />
+          <img
+            id="rainy"
+            onclick="onclick_func3()"
+            src="/Weather_Icons/rainyIcon.svg"
+          />
           <label id="top_cities">Display Top</label
-          ><input type="number" id="top_cities_num" min="3" max="10" onchange="display_top_city()" value="3" />
+          ><input
+            type="number"
+            id="top_cities_num"
+            min="3"
+            max="10"
+            onchange="display_top_city()"
+            value="3"
+          />
         </div>
       </div>
       <!-- Card view of cities  based on weather on middle section in WeatherApp -->
       <div id="card_view_cities">
-        <button id ="left_button" onclick="move_left()"><</button>
-        <div class="grid_items_1">
-        
-        </div>
-        <button id ="right_button" onclick="move_right()">></button>
+        <button id="left_button" onclick="move_left()"><</button>
+        <div class="grid_items_1"></div>
+        <button id="right_button" onclick="move_right()">></button>
       </div>
     </div>
     <!-- Bottom Section of the WeatherApp -->
@@ -103,17 +125,19 @@
           <p>Cities across continents at a Glance</p>
         </div>
         <div class="grid_head_right">
-          <p>
+          <p onclick="Print_12_cities('continent')">
             Continent Name
-            <img src="/General_Images_&_Icons/arrowDown.svg" />
-            &nbsp&nbsp Temperature
-            <img src="/General_Images_&_Icons/arrowUp.svg" />
+            <img id="con_arrow" src="/General_Images_&_Icons/arrowDown.svg" />
+          </p>
+          &nbsp&nbsp
+          <p onclick="Print_12_cities('temperature')">
+            Temperature <img id="temp_arrow" src="/General_Images_&_Icons/arrowdown.svg" />
           </p>
         </div>
       </div>
       <!-- Card view bottom section in WeatherApp -->
       <div class="grid_boxes_1">
-        <div class="box1-ingrid">
+        <!-- <div class="box1-ingrid">
           <div id="box1-ingrid_c1">
             <p id="p_1">Asia</p>
             <p id="p_2">Delhi, 10: 10 AM</p>
@@ -232,7 +256,7 @@
             <p id="p2_1">38°C</p>
             <p id="p2_2"><img src="/Weather_Icons/humidityIcon.svg" />53%</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- Json and Script files added-->

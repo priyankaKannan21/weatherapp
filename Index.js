@@ -1,16 +1,17 @@
 var weatherdata;
 // fetch data from json file
-fetch('/files/data.json')
-.then((data) => data.json())
-.then((result)=>{
-    weatherdata=result;
+fetch("/files/data.json")
+  .then((data) => data.json())
+  .then((result) => {
+    weatherdata = result;
     console.log(result);
     weatherdatas();
-    weather_icon('Anadyr');
-    time_formart('Anadyr');
+    weather_icon("Anadyr");
+    time_formart("Anadyr");
     select_cities_based_on_weather();
     onclick_func1();
-})
+    Print_12_cities("continent");
+  });
 
 //function for display content in drop box
 function weatherdatas(){   
@@ -22,46 +23,50 @@ function weatherdatas(){
     document.querySelector("#city_name").innerHTML = option;
 }
 
-setInterval(weather,1000);
+setInterval(weather, 1000);
 //function for display waether content based on city
-function weather(){
-    var keys=Object.keys(weatherdata);
-    var selected_city = document.getElementById("city").value;
+function weather() {
+  var keys = Object.keys(weatherdata);
+  var selected_city = document.getElementById("city").value;
 
-    if(!keys.includes(selected_city)){
-        document.querySelector("#temp_c").innerHTML = "Nil";
-        document.querySelector("#humidity").innerHTML = "Nil";
-        document.querySelector("#faren_f").innerHTML = "Nil";
-        document.querySelector("#preci").innerHTML = "Nil";
-        document.querySelector("#date").innerHTML = "Nil";
-        document.querySelector("#city_icon").src = "/General_Images_&_Icons/none.png"; 
-        document.getElementById("time").innerHTML = "Nil";
-        document.getElementById("am_pm_state").style.visibility="hidden"; 
-        change_data();
-    
-    }
-    else{
-        document.getElementById("am_pm_state").style.visibility="visible"; 
-        document.getElementById("city").style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-        var temperature = weatherdata[selected_city].temperature;
-        var humidity = weatherdata[selected_city].humidity;
-        var farenheit = Math.round(((parseInt(weatherdata[selected_city].temperature))*(9/5))+32);
-        var precipitation = weatherdata[selected_city].precipitation;
-        var date_time = weatherdata[selected_city].dateAndTime;
-        var date_time_array = date_time.split(", ");
-        var date = date_time_array[0]
-        new_date = date_format(date)
+  if (!keys.includes(selected_city)) {
+    document.querySelector("#temp_c").innerHTML = "Nil";
+    document.querySelector("#humidity").innerHTML = "Nil";
+    document.querySelector("#faren_f").innerHTML = "Nil";
+    document.querySelector("#preci").innerHTML = "Nil";
+    document.querySelector("#date").innerHTML = "Nil";
+    document.querySelector("#city_icon").src =
+      "/General_Images_&_Icons/none.png";
+    document.getElementById("time").innerHTML = "Nil";
+    document.getElementById("am_pm_state").style.visibility = "hidden";
+    change_data();
+  } else {
+    document.getElementById("am_pm_state").style.visibility = "visible";
+    document.getElementById("city").style.backgroundColor =
+      "rgba(0, 0, 0, 0.5)";
+    var temperature = weatherdata[selected_city].temperature;
+    var humidity = weatherdata[selected_city].humidity;
+    var farenheit = Math.round(
+      parseInt(weatherdata[selected_city].temperature) * (9 / 5) + 32
+    );
+    var precipitation = weatherdata[selected_city].precipitation;
+    var date_time = weatherdata[selected_city].dateAndTime;
+    var date_time_array = date_time.split(", ");
+    var date = date_time_array[0];
+    new_date = date_format(date);
 
-        document.querySelector("#temp_c").innerHTML = temperature;
-        document.querySelector("#humidity").innerHTML = humidity;
-        document.querySelector("#faren_f").innerHTML = farenheit+" F";
-        document.querySelector("#preci").innerHTML = precipitation;
-        document.querySelector("#date").innerHTML = new_date;
-        document.querySelector("#city_icon").src = (`/Icons_for_cities/${selected_city}.svg`); 
-        weather_icon(selected_city); 
-        time_formart(selected_city);
-        next_five_temperature(selected_city);
-    }
+    document.querySelector("#temp_c").innerHTML = temperature;
+    document.querySelector("#humidity").innerHTML = humidity;
+    document.querySelector("#faren_f").innerHTML = farenheit + " F";
+    document.querySelector("#preci").innerHTML = precipitation;
+    document.querySelector("#date").innerHTML = new_date;
+    document.querySelector(
+      "#city_icon"
+    ).src = `/Icons_for_cities/${selected_city}.svg`;
+    weather_icon(selected_city);
+    time_formart(selected_city);
+    next_five_temperature(selected_city);
+  }
 }
 
 //fucntion to change null values when city is not selected
@@ -82,25 +87,41 @@ function change_data(){
 }
 
 //function to format time
-function time_formart(city){
-    var timezone = weatherdata[city].timeZone;
-    var current_time= new Date().toLocaleString("en-US",{
-        timeZone: timezone,
-        timeStyle: "medium",
-        hourCycle: "h12",
-    });
-    var morn_even = (parseInt(current_time.slice(0,2)) >= 12)? "pmState" : "amState";
-    document.getElementById("time").innerHTML = current_time.split(' ')[0];
-    document.getElementById("am_pm_state").src=(`/General_Images_&_Icons/${morn_even}.svg`);
-    next_five_hour(current_time);
+function time_formart(city) {
+  var timezone = weatherdata[city].timeZone;
+  var current_time = new Date().toLocaleString("en-US", {
+    timeZone: timezone,
+    timeStyle: "medium",
+    hourCycle: "h12",
+  });
+  var morn_even =
+    parseInt(current_time.slice(0, 2)) >= 12 ? "pmState" : "amState";
+  document.getElementById("time").innerHTML = current_time.split(" ")[0];
+  document.getElementById(
+    "am_pm_state"
+  ).src = `/General_Images_&_Icons/${morn_even}.svg`;
+  next_five_hour(current_time);
 }
 
-//function to format date 
-function date_format(date){
-    var arr = date.split('/');
-    var array_month=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    new_date = arr[1] + "-" + array_month[parseInt(arr[0])] + "-" + arr[2];
-    return new_date;
+//function to format date
+function date_format(date) {
+  var arr = date.split("/");
+  var array_month = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  new_date = arr[1] + "-" + array_month[parseInt(arr[0])] + "-" + arr[2];
+  return new_date;
 }
 
 //function to display next five hours temperature
@@ -157,54 +178,51 @@ function weather_icon(city){
         if(parseInt(temp)>29){
             arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/sunnyIcon.svg" /></span
             ><span></span>`;
-        }
-        else if(parseInt(temp)>=23 && parseInt(temp)<=29){
-            arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/cloudyIcon.svg" /></span
+    } else if (parseInt(temp) >= 23 && parseInt(temp) <= 29) {
+      arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/cloudyIcon.svg" /></span
             ><span></span>`;
-        }
-        else if(parseInt(temp)>=18 && parseInt(temp)<=22){
-            arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/windyIcon.svg" /></span
-            ><span></span>`; 
-        }
-        else{
-            arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/rainyIcon.svg" /></span
-            ><span></span>`; 
-        }
+    } else if (parseInt(temp) >= 18 && parseInt(temp) <= 22) {
+      arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/windyIcon.svg" /></span
+            ><span></span>`;
+    } else {
+      arr_weather += `<span><img id="weather_icon1" src="/Weather_Icons/rainyIcon.svg" /></span
+            ><span></span>`;
     }
-    document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
+  }
+  document.getElementById("grid-item-3_row1_list3").innerHTML = arr_weather;
 }
 
 var weather_string;
 
 //onclick function for sunny icon in middle section
-function onclick_func1(){
-    weather_string = "sunny";
-    document.getElementById("sunny").style.borderBottom = '2px solid blue';
-    document.getElementById("winter").style.borderBottom = 'none';
-    document.getElementById("rainy").style.borderBottom = 'none';
-    select_cities_based_on_weather();
+function onclick_func1() {
+  weather_string = "sunny";
+  document.getElementById("sunny").style.borderBottom = "2px solid blue";
+  document.getElementById("winter").style.borderBottom = "none";
+  document.getElementById("rainy").style.borderBottom = "none";
+  select_cities_based_on_weather();
 
-    city_based_weather_cardview(sort_func(sunny_cities),"sunnyIcon");
+  city_based_weather_cardview(sort_func(sunny_cities), "sunnyIcon");
 }
 
 //onclick function for winter icon in middle section
-function onclick_func2(){
-    weather_string = "winter";
-    document.getElementById("sunny").style.borderBottom = 'none';
-    document.getElementById("winter").style.borderBottom = '2px solid blue';
-    document.getElementById("rainy").style.borderBottom = 'none';
-    select_cities_based_on_weather();
-    city_based_weather_cardview(sort_func(winter_cities),"snowflakeIcon");
+function onclick_func2() {
+  weather_string = "winter";
+  document.getElementById("sunny").style.borderBottom = "none";
+  document.getElementById("winter").style.borderBottom = "2px solid blue";
+  document.getElementById("rainy").style.borderBottom = "none";
+  select_cities_based_on_weather();
+  city_based_weather_cardview(sort_func(winter_cities), "snowflakeIcon");
 }
 
 //onclick function for rainy icon in middle section
-function onclick_func3(){
-    weather_string = "rainy";
-    document.getElementById("sunny").style.borderBottom = 'none';
-    document.getElementById("winter").style.borderBottom = 'none';
-    document.getElementById("rainy").style.borderBottom = '2px solid blue';
-    select_cities_based_on_weather();
-    city_based_weather_cardview(sort_func(rainy_cities),"rainyIcon");
+function onclick_func3() {
+  weather_string = "rainy";
+  document.getElementById("sunny").style.borderBottom = "none";
+  document.getElementById("winter").style.borderBottom = "none";
+  document.getElementById("rainy").style.borderBottom = "2px solid blue";
+  select_cities_based_on_weather();
+  city_based_weather_cardview(sort_func(rainy_cities), "rainyIcon");
 }
 
 //sort function for cities based on teamperature
@@ -224,10 +242,9 @@ function sort_func(cities_data){
     return city_name;
 }
 //global declaration of cities array based on weather
-var sunny_cities={};
-var winter_cities={};
-var rainy_cities={};
-
+var sunny_cities = {};
+var winter_cities = {};
+var rainy_cities = {};
 
 //function to seperate cities based on weather
 function select_cities_based_on_weather(){
@@ -298,12 +315,12 @@ function city_based_weather_cardview(weather_city,icon_weather){
 }
 
 //function for scroll left button
-function move_left(){
-    document.querySelector(".grid_items_1").scrollBy(365,0);
+function move_left() {
+  document.querySelector(".grid_items_1").scrollBy(365, 0);
 }
 //function for scroll right button
-function move_right(){
-    document.querySelector(".grid_items_1").scrollBy(-365,0);
+function move_right() {
+  document.querySelector(".grid_items_1").scrollBy(-365, 0);
 }
 
 var count_num;
