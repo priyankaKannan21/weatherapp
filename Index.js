@@ -1,11 +1,16 @@
 // fetch data from API link
-fetch("https://soliton.glitch.me/all-timezone-cities")
-  .then((data) => data.json())
+
+
+fetch("http://localhost:5000/allweatherdata")
+  .then((data) => data.text())
+  .then((data)=> data.replace(/�/g, "°"))
+  .then((data2)=> JSON.parse(data2))
   .then((result) => {
     let jsonData ={};
     for (const e of result) {
       jsonData[e.cityName]=e;
     }
+    console.log(jsonData);
     let data_object = new weather_data(jsonData);
     data_object.weatherdatas();
     data_object.weather();
@@ -16,6 +21,9 @@ fetch("https://soliton.glitch.me/all-timezone-cities")
     setInterval(data_object.time_formart.bind(data_object,data_object.selected_city), 1000);
   });
 
+  // window.setTimeout(function () {
+  //     window.location.reload();
+  // }, 60000);
 /**
  * @description class that has a constructur function and methods
  * @class weather_data
@@ -189,9 +197,9 @@ class weather_data {
    * @memberof weather_data
    */
   async next_five_temperature(city) {
-    let value = await fetch(`https://soliton.glitch.me?city=${city}`)
+    let value = await fetch(`http://localhost:5000/citydata/${city}`)
     .then(data => data.json())
-    let nxt = await fetch('https://soliton.glitch.me/hourly-forecast',{
+    let nxt = await fetch('http://localhost:5000/next5hrs',{
       method:"POST",
       headers:{
         "Content-type":"application/json",
@@ -201,8 +209,10 @@ class weather_data {
         "hours":5
       })
     })
-    .then(data => data.json())
-    let arr1 = nxt.temperature;
+    .then((nxt) => nxt.text())
+  .then((nxt)=> nxt.replace(/�/g, "°"))
+    let arr =await JSON.parse(nxt)
+    let arr1 = arr.temperature;
     arr1.push(arr1[1]);
     let arr_temperature = ``;
     for (let i = 0; i < arr1.length; i++) {
@@ -245,9 +255,9 @@ class weather_data {
    * @memberof weather_data
    */
   async weather_icon(city) {
-    let value = await fetch(`https://soliton.glitch.me?city=${city}`)
+    let value = await fetch(`http://localhost:5000/citydata/${city}`)
     .then(data => data.json())
-    let nxt = await fetch('https://soliton.glitch.me/hourly-forecast',{
+    let nxt = await fetch('http://localhost:5000/next5hrs',{
       method:"POST",
       headers:{
         "Content-type":"application/json",
@@ -257,8 +267,8 @@ class weather_data {
         "hours":5
       })
     })
-    .then(data => data.json())
-    let arr1 = nxt.temperature;
+    let arr =await nxt.json()
+     let arr1 = arr.temperature;
     arr1.push(arr1[1]);
     let arr_weather = ``;
     for (let i = 0; i < arr1.length; i++) {
@@ -527,6 +537,7 @@ class weather_data {
       </div>`;
     }
     document.querySelector(".grid_boxes_1").innerHTML = print_first_12_cities;
+    console.log(this.time_Zone_city);
   }
 }
 
