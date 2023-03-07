@@ -1,27 +1,40 @@
-var express = require("express");
-var app = express();
+const express = require("express");
+const app = express();
+const {fork} = require("child_process");
 app.use(express.static('./public'));
-app.use(express.json());
-
-const {
-  allTimeZones,
-  timeForOneCity,
-  nextNhoursWeather,
-} = require("./timeZone");
+app.use(express.json())
+const path = require("path");
+const port = 5000;
 
 app.get("/allweatherdata", (req,res) => {
-  res.send(allTimeZones());
+  const child = fork("./allTimeZones.js");
+  child.on("message",val=>{
+    res.send(val);
+    child.kill();
+  });
 })
+
 app.get("/citydata/:id", (req,res) => {
+  const child = fork("./timeForOneCity.js");
   let city_name = req.params.id;
-  res.send(timeForOneCity(city_name));
-});
-app.post("/next5hrs", (req,res) => {
-  var city_data = req.body;
-  res.send(nextNhoursWeather(city_data.city_Date_Time_Name,city_data.hours,allTimeZones()));
+  child.send(city_name);
+  child.on("message",val=>{
+    res.send(val);
+    child.kill();
+  });
 });
 
-app.listen(5000, (err) => {
+app.post("/next5hrs", (req,res) => {
+  const child = fork("./next5hrs.js");
+  var city_data = req.body;
+  child.send(city_data);
+  child.on("message",val=>{
+    res.send(val);
+    child.kill();
+  });
+});
+
+app.listen(port, (err) => {
   if (err) {
     console.log(err);
   } else {
