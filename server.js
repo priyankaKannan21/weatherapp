@@ -2,12 +2,13 @@ const express = require("express");
 const app = express();
 const {fork} = require("child_process");
 app.use(express.static('./public'));
+app.use(express.json())
 const path = require("path");
+const port = 5000;
 
 app.get("/allweatherdata", (req,res) => {
   const child = fork("./allTimeZones.js");
   child.on("message",val=>{
-    console.log(val);
     res.send(val);
     child.kill();
   });
@@ -33,7 +34,7 @@ app.post("/next5hrs", (req,res) => {
   });
 });
 
-app.listen(5000, (err) => {
+app.listen(port, (err) => {
   if (err) {
     console.log(err);
   } else {

@@ -41,7 +41,7 @@ class weatherData {
     this.tempVar = false;
     this.tempData, this.contData;
     this.timeZoneCity = [];
-    this.selectedCity="anadyr";
+    this.selectedCity="Anadyr";
   }
 
   /**
@@ -51,7 +51,7 @@ class weatherData {
   weatherDatas() {
     let option = ``;
     for (let index = 0; index < this.keys.length; index++) {
-      option += `<option value=${this.keys[index].charAt(0).toUpperCase() + this.keys[index].slice(1)}></option>`;
+      option += `<option value=${this.keys[index]}></option>`;
     }
     document.querySelector("#city_name").innerHTML = option;
     document
@@ -88,8 +88,8 @@ class weatherData {
    * @memberof weatherData
    */
   weather() {
-    this.selectedCity = document.getElementById("city").value.toLowerCase();
-    let keysCities = this.keys;
+    this.selectedCity = document.getElementById("city").value;
+    let keysCities = Object.keys(this.weatherData);
     for(let index=0;index<keysCities.length;index++){
       keysCities[index] = keysCities[index].toLowerCase();
     }
@@ -206,7 +206,7 @@ class weatherData {
     let nxt = await fetch('http://localhost:5000/next5hrs',{
       method:"POST",
       headers:{
-        "Content-type":"application/json",
+        "Content-Type":"application/json",
       },
       body:JSON.stringify({
         ...value,
@@ -264,7 +264,7 @@ class weatherData {
     let nxt = await fetch('http://localhost:5000/next5hrs',{
       method:"POST",
       headers:{
-        "Content-type":"application/json",
+        "Content-Type":"application/json",
       },
       body:JSON.stringify({
         ...value,
@@ -272,7 +272,7 @@ class weatherData {
       })
     })
     let arr =await nxt.json()
-     let arr1 = arr.temperature;
+    let arr1 = arr.temperature;
     arr1.push(arr1[1]);
     let arrWeather = ``;
     for (let index = 0; index < arr1.length; index++) {
